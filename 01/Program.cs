@@ -19,13 +19,5 @@ for(int i = 0; i < left.Length; i++)
 Console.WriteLine("Step 1: " + Sum_Step1);
 
 //Step 2
-int similarity = 0;
-
-foreach(int leftValue in left)
-{
-    int appearances = right.Where(r => r == leftValue).Count();
-    int thisSimilarity = leftValue * appearances;
-    similarity += thisSimilarity;
-}
-
-Console.WriteLine("Step 2: " + similarity);
+var sumStep2 = left.Select(l => l * (right.Where(r => r == l).Count())).Sum();
+Console.WriteLine("Step 2: " + sumStep2);
