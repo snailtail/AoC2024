@@ -21,7 +21,6 @@ dotnet sln add tests/$1-test/$1-test.csproj
 cd tests/$1-test
 dotnet add package shouldly
 dotnet add reference ../../$1/$1.csproj
-dotnet add reference ../../common/common.csproj
 cd ..
 cd ..
 
