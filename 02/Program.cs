@@ -7,10 +7,6 @@ foreach(var entry in uData)
 {    
     step1ValidCount += entry.IsValid ? 1 : 0;
     step2ValidCount += entry.IsAlmostValid ? 1 : 0;
-    if(!entry.IsAlmostValid)
-    {
-        Console.WriteLine(string.Join(',',entry.Data) + " => " + entry.IsAlmostValid);
-    }
 }
 
 Console.WriteLine($"Step 1: {step1ValidCount}");

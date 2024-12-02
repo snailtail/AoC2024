@@ -35,9 +35,9 @@ public class unusualData
             )
             {
                 // so we have an error
-                // for step 2 - we can check if this array would be valid if we removed the current value
+                // for step 2 - we can check if this array would be valid if we remove any value
                 if(allowErrors){
-                for(int ii = i; ii < arr.Length; ii++)
+                for(int ii = 0; ii < arr.Length; ii++)
                 {
                     int[] newArr = arr.Where((_, index) => index != ii).ToArray();
                     bool isAlmostValid = isValid(newArr,false);
