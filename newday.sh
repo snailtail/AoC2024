@@ -4,12 +4,16 @@ git checkout main
 git pull -r
 git checkout -b day$1
 
-# Get the data for this day, and generate a file for testinput
-python3 ./getinput.py $1
-touch ./data/$1test.dat
 
 # Create the project and a unit test
 dotnet new console -o $1
+cd $1
+
+# Add Build.targets file ref to csproj file
+import_line='  <Import Project="../Build.targets" />'
+sed -i.bak "/<\/Project>/i $import_line" "$1.csproj"
+cd ..
+
 cd tests
 dotnet new xunit -o $1-test
 cd ..
@@ -24,6 +28,9 @@ dotnet add reference ../../$1/$1.csproj
 cd ..
 cd ..
 
+# Get the data for this day, and generate a file for testinput
+python3 ./getinput.py $1
+touch ./$1/$1test.dat
 
 echo "# Advent of Code 2024 Day$1  " > $1/README.md
 git add .

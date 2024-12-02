@@ -29,7 +29,7 @@ Global
 		{FC12544A-DC42-4C67-B70C-38EF13792D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC12544A-DC42-4C67-B70C-38EF13792D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC12544A-DC42-4C67-B70C-38EF13792D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC12544
+		{FC12544A-DC42-4C67-B70C-38EF13792D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
