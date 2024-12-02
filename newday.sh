@@ -35,7 +35,7 @@ cd ..
 python3 ./getinput.py $1
 touch ./$1/$1test.dat
 
-echo "# Advent of Code 2024 Day$1  " > $1/README.md
+echo "# Advent of Code 2024 Day$1  " > ./$1/README.md
 git add .
 git commit -m "Add new day $1"
 git push --set-upstream origin day$1
