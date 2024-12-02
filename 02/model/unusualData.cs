@@ -12,34 +12,48 @@ public class unusualData
         _data = data;
     }
 
-    public bool IsIncreasing => _data[1] > _data[0];
+    
 
-    public bool IsValid => isValid();
+    public bool IsValid => isValid(_data,false);
+    public bool IsAlmostValid => isValid(_data,true);
 
-    private bool isValid()
+    private bool isValid(int[] arr, bool allowErrors = false)
     {    
-        for(int i = 0; i < _data.Length-1; i++)
+        bool isIncreasing = arr[1] > arr[0];
+        for(int i = 0; i < arr.Length-1; i++)
         {
 
             // Check if increasing or decreasing breaks
-            if((this.IsIncreasing && _data[i+1] < _data[i]) || (!this.IsIncreasing && _data[i+1] > _data[i]))
+            if(
+                (isIncreasing && arr[i+1] < arr[i]) 
+                || 
+                (!isIncreasing && arr[i+1] > arr[i]) 
+                || 
+                arr[i+1] == arr[i]
+                ||
+                (Math.Abs(arr[i+1] - arr[i]) < 1 || Math.Abs(arr[i+1] - arr[i]) > 3)
+            )
             {
-                // 
+                // so we have an error
+                // for step 2 - we can check if this array would be valid if we removed the current value
+                if(allowErrors){
+                for(int ii = i; ii < arr.Length; ii++)
+                {
+                    int[] newArr = arr.Where((_, index) => index != ii).ToArray();
+                    bool isAlmostValid = isValid(newArr,false);
+                    if(isAlmostValid)
+                    {
+                        return true;
+                    }
+                }
+
+                }
                 return false;
             }
 
-            // Check if gaps between elements is larger than allowed
-            int gap = Math.Abs(_data[i+1] - _data[i]);
-            if(gap < 1 || gap > 3)
-            {
-                return false;
-            }
+            
         }
 
         return true;
-    }
-
-    
-
-    
+    }    
 }
