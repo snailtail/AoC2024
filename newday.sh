@@ -10,8 +10,11 @@ dotnet new console -o $1
 cd $1
 
 # Add Build.targets file ref to csproj file
+csproj_file="$1.csproj"
 import_line='  <Import Project="../Build.targets" />'
-sed -i.bak "/<\/Project>/i $import_line" "$1.csproj"
+sed -i '' "/<\/Project>/i\\
+$import_line
+" "$csproj_file"
 cd ..
 
 cd tests
