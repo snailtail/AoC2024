@@ -28,7 +28,15 @@ MXMXAXMASX".Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
     {
         
         var mySearcher = new WordSearcher(_testInput);
-        int result = mySearcher.SolveStep1();
+        int result = mySearcher.SolvePart1();
         result.ShouldBe(18);
+    }
+
+    [Fact]
+    public void Part2_TestInput_ResultShouldBeEqualTo9()
+    {
+        var mySearcher = new WordSearcher(_testInput);
+        int result = mySearcher.SolvePart2();
+        result.ShouldBe(9);
     }
 }

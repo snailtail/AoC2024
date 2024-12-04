@@ -2,5 +2,9 @@
 
 var testInput = File.ReadAllLines("04.dat");
 var mySearcher = new WordSearcher(testInput);
-int result = mySearcher.SolveStep1();
-Console.WriteLine(result);
+
+int resultPart1 = mySearcher.SolvePart1();
+Console.WriteLine($"Part 1: {resultPart1}");
+
+int resultPart2 = mySearcher.SolvePart2();
+Console.WriteLine($"Part 2: {resultPart2}");

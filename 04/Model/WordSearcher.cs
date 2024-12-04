@@ -13,29 +13,24 @@ public class WordSearcher
             CharGrid[i] = input[i].ToCharArray();
         }
     }
-    public int SolveStep1()
+    public int SolvePart1()
     {
-        string wordToSearchFor = "XMAS";
-        int resultStep1 = 0;
-        for (int row = 0; row < CharGrid.Length; row++)
+        const string wordToSearchFor = "XMAS";
+        var resultStep1 = 0;
+        for (var row = 0; row < CharGrid.Length; row++)
         {
-            for (int col = 0; col < CharGrid[row].Length; col++)
+            for (var col = 0; col < CharGrid[row].Length; col++)
             {
                 if (CharGrid[row][col] == 'X')
                 {
-                    Console.WriteLine($"FOUND X @ Row: {row}, Col: {col}");
-                    
                     resultStep1 += Search(row,col,0,1, wordToSearchFor);
                     resultStep1 += Search(row,col,0,-1, wordToSearchFor);
                     resultStep1 += Search(row,col,1,0, wordToSearchFor);
                     resultStep1 += Search(row,col,-1,0, wordToSearchFor);
-                    
                     resultStep1 += Search(row,col,1,1, wordToSearchFor);
                     resultStep1 += Search(row,col,-1,1, wordToSearchFor);
                     resultStep1 += Search(row,col,1,-1, wordToSearchFor);
-                    
                     resultStep1 += Search(row,col,-1,-1, wordToSearchFor);
-                    
                 }
             }
         }
@@ -43,7 +38,58 @@ public class WordSearcher
         return resultStep1;
     }
 
-    private int Search(int r, int c, int rdir, int cdir, string word, bool allowWrapAround = false)
+    public int SolvePart2()
+    {
+        HashSet<string> xmasCenterPoints = new(); // Store the center point coordinate of every confirmed X-MAS
+        for (var row = 0; row < CharGrid.Length; row++)
+        {
+            var aIndices = CharGrid[row]
+                .Select((c, index) => new { Char = c, Index = index })
+                .Where(x => x.Char == 'A')
+                .Select(x => x.Index)
+                .ToArray();
+            foreach (var col in aIndices)
+            {
+                if(IsValidCenterPoint(row,col)){
+                    xmasCenterPoints.Add($"{row}x{col}");
+                }
+            }
+        }
+
+        return xmasCenterPoints.Count;
+    }
+    
+    private bool IsValidCenterPoint(int r, int c)
+    {
+        // If any corner is outside the grid, return false and go on with life.
+        if (r <= 0 || c <= 0 || r >= CharGrid.Length - 1 || c >= CharGrid[r].Length - 1 || r + 1 >= CharGrid.Length || c > CharGrid[r].Length)
+        {
+            return false;
+        }
+        
+        (int r,int c) tlCorner = (r - 1, c - 1); // Top left corner
+        (int r, int c) trCorner= (r - 1, c + 1); // Top right corner
+        (int r, int c) blCorner = (r + 1, c - 1); // Bottom left corner
+        (int r, int c) brCorner = (r + 1, c + 1); // Bottom right corner
+        
+        // Fetch the chars in the corners
+        var tlChar = CharGrid[tlCorner.r][tlCorner.c];
+        var brChar = CharGrid[brCorner.r][brCorner.c];
+        var blChar = CharGrid[blCorner.r][blCorner.c];
+        var trChar = CharGrid[trCorner.r][trCorner.c];
+        
+        // Check for valid combos of chars relative to the A in the center point.
+        if(((tlChar == 'M' && brChar=='S') || (tlChar == 'S' && brChar == 'M')) 
+           && 
+           ((blChar == 'M' && trChar == 'S') || (blChar == 'S' && trChar == 'M'))
+           )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private int Search(int r, int c, int rDir, int cDir, string word, bool allowWrapAround = false)
     {
         int rowindex = 0;
         int colindex = 0;
@@ -56,7 +102,6 @@ public class WordSearcher
             {
                 row = (r + rowindex + CharGrid.Length) % CharGrid.Length; // Ensure row wraps correctly
                 col = (c + colindex + CharGrid[r].Length) % CharGrid[r].Length; // Ensure col wraps correctly
-                
             }
             else
             {
@@ -77,10 +122,10 @@ public class WordSearcher
                 return 0;
             }
             
-            rowindex += rdir; // Vertical movement (up/down)
-            colindex += cdir; // Horizontal movement (left/right)
+            rowindex += rDir; // Vertical movement (up/down)
+            colindex += cDir; // Horizontal movement (left/right)
         }
-        Console.WriteLine($"Search found a hit! @ {r}, {c}");
+
         return 1;
     }
     
