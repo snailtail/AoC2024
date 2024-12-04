@@ -33,3 +33,29 @@ foreach (Match match in matchesPart2)
     result2+=value1*value2;
 }
 Console.WriteLine($"Part 2: {result2}");
+
+// Part 2 With better Regex:
+
+var pattern2 = @"don't\(\)|mul\((\d+),(\d+)\)|do\(\)";
+var machesPart2Attempt2 = Regex.Matches(result, pattern2,RegexOptions.Singleline);
+bool Active = true;
+result2 = 0;
+foreach (Match match in machesPart2Attempt2)
+{
+    if (match.Value == "don't()")
+    {
+        Active = false;
+    }
+    else if (match.Value == "do()")
+    {
+        Active = true;
+    }
+    else if (Active)
+    {
+       //Console.WriteLine(match.Value);
+       var value1 = int.Parse(match.Groups[1].Value);
+       var value2 = int.Parse(match.Groups[2].Value);
+       result2+=value1*value2;
+    }
+}
+Console.WriteLine($"Part 2++: {result2}");
