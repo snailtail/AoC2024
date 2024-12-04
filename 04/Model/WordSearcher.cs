@@ -19,11 +19,6 @@ public class WordSearcher
         int resultStep1 = 0;
         for (int row = 0; row < CharGrid.Length; row++)
         {
-            var cols = CharGrid[row].Select((c, index) => new { Char = c, Index = index }) // Pair each char with its index
-                    .Where(x => x.Char == 'X') // Filter where char is 'X'
-                    .Select(x => x.Index) // Select only indices
-                    .ToArray();
-            
             for (int col = 0; col < CharGrid[row].Length; col++)
             {
                 if (CharGrid[row][col] == 'X')
