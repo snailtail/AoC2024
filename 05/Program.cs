@@ -1,5 +1,4 @@
-﻿using System.Xml.XPath;
-using _05.Model;
+﻿using _05.Model;
 
 var path = "05.dat";
 var rules = File.ReadAllLines(path).Where(l => l.Contains("|")).ToList();
@@ -9,13 +8,13 @@ int resultPart2 = 0;
 
 foreach (var update in updates)
 {
-    if (PrintQueueHandler.isValidUpdate(update, rules))
+    if (PrintQueueHandler.IsValidUpdate(update, rules))
     {
-        resultPart1 += PrintQueueHandler.getMiddleItem(update);
+        resultPart1 += PrintQueueHandler.GetMiddleItem(update);
     }
     else
     {
-        resultPart2 += PrintQueueHandler.getFixedUpdateMiddleItem(update,rules);
+        resultPart2 += PrintQueueHandler.GetFixedUpdateMiddleItem(update,rules);
     }
 }
 

@@ -30,3 +30,15 @@ I should have read the instructions a bit more carefully, as per usual I guess..
 Well - stupid mistake. After fixing that it was an easy path forward to sculpting part 2 during a coffebreak.  
 Find a centerpoint, and check for matching patterns of "corners".  
 Fun exercise, annoyingly stupid me. Lesson learned: Don't read the instructions fast at breakfast, and then try to solve the problem a few hours later without revisiting the instructions first.
+
+## --- Day 5: Print Queue ---  
+Check strings containing numbers against a list of rules dictating which numbers need to come before which other numbers.
+
+Part 1 was straightforward enough, I use IndexOf, and completely ignored LINQ and other ways which might have been easier or more efficient.    
+But it worked just fine, and the input was not that large - so I didn't think I would need to aim for resource efficiency. :D  
+
+Part 2 was a bit trickier, take the non valid "updates" and move the numbers around in them until they no longer break the rules.
+Actually not as tricky as I initially thought when I read the description.  
+Then again, this is probably far from the best way to solve this - I'm thinking some sort of sort (he he) with a custom comparer might have done the trick.  
+However, there was not enough brain- or will power in the tank today to tackle such a thing.  
+I'm content with the solution.  
