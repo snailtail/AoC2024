@@ -42,3 +42,18 @@ Actually not as tricky as I initially thought when I read the description.
 Then again, this is probably far from the best way to solve this - I'm thinking some sort of sort (he he) with a custom comparer might have done the trick.  
 However, there was not enough brain- or will power in the tank today to tackle such a thing.  
 I'm content with the solution.  
+
+## --- Day 6: Guard Gallivant ---  
+For part 1 we were supposed to move a guard around on a map, turn right when encountering obstacles dead ahead. And then count the unique coordinates visited by the guard.    
+Not very challenging, most time spent on building some classes and setting up directions/turning and such things.  
+
+For part 2 it gets trickier, find all the places on the map where placing a new obstacle would put the guard in an infinite loop.  
+That will have to be solved later because right now it's time for work.    
+
+So now it's later in the day, and I spent some time during my lunch thinking about how to go about this.  
+At first it felt almost impossible to grasp - but as I sat looking at the test input I began to think that I could perhaps brute force my way through this.  
+If I first find the regular path that the guard would take, with the base map. And then I place an obstacle at each of the open coordinates on that path, and then I just let the guard run through that version of the map - and check for loops.  
+Now the hardest part turned out to be deciding on how to detect a loop. I was at first thinking in ways of counting how many times the guard passed the same coordinates - and find some arbitrary number that would probably indicate a loop.  
+However, I sketched a bit with a pencil on some paper and found that if a guard hits the same obstacle twice when coming from the same direction, that has to be a sure way to tell that there is a loop.  
+So that's what I implemented, and it worked both for my test input, and for the "real input".  
+I'm sure there is some cool algorithm out there that can calculate this somehow - bruteforce usually is not the way in AoC. But sometimes it still works, and it runs in about 2 seconds on my puny Windows laptop, so I can live with that. I've done a lot worse bruteforcing in previous years... :D
