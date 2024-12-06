@@ -42,3 +42,10 @@ Actually not as tricky as I initially thought when I read the description.
 Then again, this is probably far from the best way to solve this - I'm thinking some sort of sort (he he) with a custom comparer might have done the trick.  
 However, there was not enough brain- or will power in the tank today to tackle such a thing.  
 I'm content with the solution.  
+
+## --- Day 6: Guard Gallivant ---  
+For part 1 we were supposed to move a guard around on a map, turn right when encountering obstacles dead ahead. And then count the unique coordinates visited by the guard.    
+Not very challenging, most time spent on building some classes and setting up directions/turning and such things.  
+
+For part 2 it gets trickier, find all the places on the map where placing a new obstacle would put the guard in an infinite loop.  
+That will have to be solved later because right now it's time for work.    
