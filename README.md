@@ -57,3 +57,11 @@ Now the hardest part turned out to be deciding on how to detect a loop. I was at
 However, I sketched a bit with a pencil on some paper and found that if a guard hits the same obstacle twice when coming from the same direction, that has to be a sure way to tell that there is a loop.  
 So that's what I implemented, and it worked both for my test input, and for the "real input".  
 I'm sure there is some cool algorithm out there that can calculate this somehow - bruteforce usually is not the way in AoC. But sometimes it still works, and it runs in about 2 seconds on my puny Windows laptop, so I can live with that. I've done a lot worse bruteforcing in previous years... :D
+
+## --- Day 7: Bridge Repair ---  
+Enter Recursion... :D  
+I was waiting for it, the classic - "We're gonna need recursion for this".  
+Trying out different combinations of multiplication and addition of numbers to reach a target value.  
+Recursion is always a bit tricky, and it took me a good while to get it working.  
+
+Part 2 introduced a new operator for concatenation. My first instict was that this would be very hard to do, but then I realized that this could be implemented as a simple method, which would be used in the existing recursive method - and then just add a flag to enable concatenation in the calculations for part 2. 
