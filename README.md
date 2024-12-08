@@ -11,15 +11,15 @@ Might clean it up later.
 
 I went back and took a new look at part 2. After looking at the problem I realized it was set up for just summing up all the values from the "Right" list which occured in the "Left" list.  
 This could be done in a much simpler LINQ query, and that also means a lot more performant code.  
-Not that it acually mattered in this case, but with larger inputs it sure would have.
+Not that it actually mattered in this case, but with larger inputs it sure would have.
 For my input the difference was going from about 24 000 000 ticks to 400 000 ticks, a factor of 60 times faster for the "smarter" solution. And for larger inputs the factor would be even bigger.
 
 ## --- Day 2: Red-Nosed Reports ---  
 Checking sequences of integers, if they are increasing or decreasing - and for part 2 allowing for one error and still be reported as valid.  
-Part 1 was pretty straightforward, and I thought I had a grip on part 2 as well - but got stuck for a while, had to give it up during the day and do some work *sadface* and returned to it in the evening, checking my input and looking for edge cases.  
+Part 1 was pretty straightforward, and I thought I had a grip on part 2 as well - but got stuck for a while, had to give it up during the day and do some work *sad face* and returned to it in the evening, checking my input and looking for edge cases.  
 I spent a good deal of time before I figured out that I - ONCE AGAIN - had an off by one error. My problem was that I wasn't checking the whole array when checking if it was possible to remove one item and get a passing "report". I started from the index where I discovered the error - which could be a bit further along in the arrays indices.  
 When I found the mistake everything worked out as it should.  
-Yet again reinforcing that unittests are the shiznitz, but only effective if you're testing for the right thing. :-P  
+Yet again reinforcing that unittests are the shit, but only effective if you're testing for the right thing. :-P  
 
 ## --- Day 3: Mull It Over ---  
 Regex here we go... :D  
@@ -28,23 +28,23 @@ Part 2 had me for a while, I was wrongly using `RegexOptions.MultiLine` - when I
 After switching that back to SingleLine the calculation checked out OK.  
 
 ## --- Day 4: Ceres Search ---  
-Traverse a grid and check for occurences of a word in 8 possible directions. Shouldn't be too hard right?  
+Traverse a grid and check for occurrences of a word in 8 possible directions. Shouldn't be too hard right?  
 Started late - at breakfast, about 1.5 hours later than usual. Then had to leave it and do some work.  
 Took it up again at lunchtime-ish, and spent so much time wondering what was wrong - until I realized that I wasn't supposed to allow for words wrapping around the edges of the grid.  
-I should have read the instructions a bit more carefully, as per usual I guess..  
-Well - stupid mistake. After fixing that it was an easy path forward to sculpting part 2 during a coffebreak.  
-Find a centerpoint, and check for matching patterns of "corners".  
+I should have read the instructions a bit more carefully, as per usual I guess.  
+Well - stupid mistake. After fixing that it was an easy path forward to sculpting part 2 during a coffee break.  
+Find a center point, and check for matching patterns of "corners".  
 Fun exercise, annoyingly stupid me. Lesson learned: Don't read the instructions fast at breakfast, and then try to solve the problem a few hours later without revisiting the instructions first.
 
 ## --- Day 5: Print Queue ---  
 Check strings containing numbers against a list of rules dictating which numbers need to come before which other numbers.
 
 Part 1 was straightforward enough, I use IndexOf, and completely ignored LINQ and other ways which might have been easier or more efficient.    
-But it worked just fine, and the input was not that large - so I didn't think I would need to aim for resource efficiency. :D  
+But it worked just fine, and the input was not that large - so I didn't think I would need to aim for resource efficiency :D  
 
-Part 2 was a bit trickier, take the non valid "updates" and move the numbers around in them until they no longer break the rules.
+Part 2 was a bit trickier, take the non-valid "updates" and move the numbers around in them until they no longer break the rules.
 Actually not as tricky as I initially thought when I read the description.  
-Then again, this is probably far from the best way to solve this - I'm thinking some sort of sort (he he) with a custom comparer might have done the trick.  
+Then again, this is probably far from the best way to solve this - I'm thinking some sort of sort (he he he) with a custom comparer might have done the trick.  
 However, there was not enough brain- or will power in the tank today to tackle such a thing.  
 I'm content with the solution.  
 
@@ -61,12 +61,37 @@ If I first find the regular path that the guard would take, with the base map. A
 Now the hardest part turned out to be deciding on how to detect a loop. I was at first thinking in ways of counting how many times the guard passed the same coordinates - and find some arbitrary number that would probably indicate a loop.  
 However, I sketched a bit with a pencil on some paper and found that if a guard hits the same obstacle twice when coming from the same direction, that has to be a sure way to tell that there is a loop.  
 So that's what I implemented, and it worked both for my test input, and for the "real input".  
-I'm sure there is some cool algorithm out there that can calculate this somehow - bruteforce usually is not the way in AoC. But sometimes it still works, and it runs in about 2 seconds on my puny Windows laptop, so I can live with that. I've done a lot worse bruteforcing in previous years... :D
+I'm sure there is some cool algorithm out there that can calculate this somehow - bruteforce usually is not the way in AoC. But sometimes it still works, and it runs in about 2 seconds on my puny Windows laptop, so I can live with that. I've done a lot worse brute-forcing in previous years... :D
 
 ## --- Day 7: Bridge Repair ---  
 Enter Recursion... :D  
-I was waiting for it, the classic - "We're gonna need recursion for this".  
+I was waiting for it, the classic - "We're going to need recursion for this".  
 Trying out different combinations of multiplication and addition of numbers to reach a target value.  
 Recursion is always a bit tricky, and it took me a good while to get it working.  
 
-Part 2 introduced a new operator for concatenation. My first instict was that this would be very hard to do, but then I realized that this could be implemented as a simple method, which would be used in the existing recursive method - and then just add a flag to enable concatenation in the calculations for part 2. 
+Part 2 introduced a new operator for concatenation. My first instinct was that this would be very hard to do, but then I realized that this could be implemented as a simple method, which would be used in the existing recursive method - and then just add a flag to enable concatenation in the calculations for part 2. 
+
+## --- Day 8: Resonant Collinearity ---  
+I had a late start for this one. Sleeping in, eating breakfast, reading the problem, almost giving up as I thought it would be too hard for me to figure out.  
+But after a cup of coffee I read through the problem again, and tried to explain why it was so hard to do to my Wife (thank you Wife-rubber-duck! <3), and that made me look at the problem from a different angle.  
+Suddenly it was just a matter of parsing, searching, pairing up coordinates, and calculating new coordinates from those pairs.  
+
+Also, today I decided to try this totally TDD - I only made an xUnit test project, and built the tests I knew I would need first. And then built the methods and logic until the tests passed.  
+I'm far from good at TDD, but this could be a good way to actually get some practice in.  
+I'm also using Rider for the first time, and that's a bit unfamiliar to me - but gives some good practice for that also.  
+Fun challenge. Now I haven't even read what Part 2 is asking for yet - I'm a bit afraid to look to be honest... :D  
+
+Well... I was not wrong. :D
+Part 2 kicked me right in the face.  
+I tried all sorts of bad ideas, with the antenna coordinates as starting point. And then for a while using the coordinates for the AntiNodes from Part1 as starting points.  
+That only fueled my impostor syndrome really badly. Then I googled around randomly trying to formulate something I wasn't sure how to express. Like "how do I tell if a point is on the same..." - and then I remembered "vectors".  
+Ah what a revelation - thank you dear brain for not being completely turned off today. So googling onwards from vectors, I got the idea that one could draw a vector from any point to a known antenna coordinate from one of the antenna pairs, and then check if that vector was parallell to the vector between the coordinates in the pair.  
+Now that was a fun trip into forgotten realms, and some new ones as well.  
+I haven't studied maths and geometry and such things in \*hrm\* _"a while"_.  
+
+But after googling some more and trying some stuff out, I found that it could be done in such a simple way that I could understand it.  
+So the code I implemented for part two does just that. It continues on from the previous solution, traversing each point in the grid and checking against all the pairs of coordinates for antennas. Drawing vectors between the current position in the grid, and the first coordinate in the pair, and one between the coordinates in the pair.
+Then checking if these vectors are parallell using the formula a * d == b * c (assuming vector 1 = (a, b) and vector 2 = (c, d)).  
+I believe the term I found on Google was _"checking if the vectors are scalar multiples of each other"_.  
+Phew, that was certainly a weekend kind of problem.  
+But it's always fun when you do give it a go, and you learn something new along the way. I will most likely forget most things about scalar multiples of vectors until next time I need them, but maybe I'll have some tiny fragment of a memory that will help me find the right type of solution faster next time.  
