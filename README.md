@@ -9,6 +9,11 @@ I could definitely tell I haven't been coding as much in the past year, felt a b
 Threw together the first thing that came to mind, and it worked.  
 Might clean it up later.  
 
+I went back and took a new look at part 2. After looking at the problem I realized it was set up for just summing up all the values from the "Right" list which occured in the "Left" list.  
+This could be done in a much simpler LINQ query, and that also means a lot more performant code.  
+Not that it acually mattered in this case, but with larger inputs it sure would have.
+For my input the difference was going from about 24 000 000 ticks to 400 000 ticks, a factor of 60 times faster for the "smarter" solution. And for larger inputs the factor would be even bigger.
+
 ## --- Day 2: Red-Nosed Reports ---  
 Checking sequences of integers, if they are increasing or decreasing - and for part 2 allowing for one error and still be reported as valid.  
 Part 1 was pretty straightforward, and I thought I had a grip on part 2 as well - but got stuck for a while, had to give it up during the day and do some work *sadface* and returned to it in the evening, checking my input and looking for edge cases.  

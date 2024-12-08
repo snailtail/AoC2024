@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
-var lines = File.ReadAllLines("../data/01.dat");
+var lines = File.ReadAllLines("01test.dat");
 int[] left = new int[lines.Length];
 int[] right = new int[lines.Length];
 for(int i = 0; i < lines.Length; i++){
@@ -19,5 +20,18 @@ for(int i = 0; i < left.Length; i++)
 Console.WriteLine("Step 1: " + Sum_Step1);
 
 //Step 2
+var stopwatch = Stopwatch.StartNew();
+long elapsedFirstMethod;
 var sumStep2 = left.Select(l => l * (right.Where(r => r == l).Count())).Sum();
-Console.WriteLine("Step 2: " + sumStep2);
+stopwatch.Stop();
+elapsedFirstMethod = stopwatch.ElapsedTicks;
+
+
+long elapsedSecondtMethod;
+stopwatch = Stopwatch.StartNew();
+var sumStep2Smarter = right.Where(l => left.Contains(l)).Sum();
+stopwatch.Stop();
+elapsedSecondtMethod = stopwatch.ElapsedTicks;
+
+Console.WriteLine("Step 2: " + sumStep2 + " Time: " + elapsedFirstMethod);
+Console.WriteLine("Step 2: " + sumStep2Smarter + " Time: " + elapsedSecondtMethod );
