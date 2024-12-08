@@ -43,11 +43,16 @@ public class AntennaMap
             );
         Console.WriteLine($"Found {FrequencyMap.Count} frequency coordinates");
     }
-
+    
     public List<(int, int)> AntiNodes => GetInvertedPoints(FrequencyWithCoordinatePairs).ToList();
     private HashSet<(int, int)> GetInvertedPoints(
         Dictionary<char, List<((int, int), (int, int))>> coordinatePairs)
     {
+        
+        // for part 1 we only find ones that are at a set distance form c1 and c2 - where the distance to c2 has to be twice the distance to c1.
+        // for part 2 we need to find all possible points in a straight line from the pair - no matter the distances between ip and c1 and c2. 
+        // so this is more to find an angle between the two coordinates and draw each coordinate on that line somehow.
+        
         var uniquePoints = new HashSet<(int, int)>();
 
         foreach (var kvp in coordinatePairs)
@@ -78,6 +83,40 @@ public class AntennaMap
         return uniquePoints;
     }
     
+    
+    public int GetAntiNodesCount_Part2()
+    {
+        HashSet<(int, int)> antiNodes = new();
+
+        for (int row = 0; row < _mapData.Length; row++)
+        {
+            for (int col = 0; col < _mapData[0].Length; col++)
+            {
+                foreach (var kvp in FrequencyWithCoordinatePairs)
+                {
+                    foreach (var coord in kvp.Value)
+                    {
+                        ((int row1, int col1), (int row2, int col2)) = coord;
+
+                        // Create vector from the current point to the first coordinate
+                        var checkVector = (row - row1, col - col1);
+
+                        // Pair vector
+                        var pairVector = (row2 - row1, col2 - col1);
+
+                        // Are the two vectors parallell? (Are the vectors scalar multiples of each other?)
+                        if (checkVector.Item1 * pairVector.Item2 == checkVector.Item2 * pairVector.Item1)
+                        {
+                            antiNodes.Add((row, col));
+                        }
+                    }
+                }
+            }
+        }
+        return antiNodes.Count;
+    }
+
+
 }
 
 public class MapTests
@@ -129,6 +168,15 @@ public class MapTests
         var expectedAntiNodeCount = 14;
         Assert.Equal(expectedAntiNodeCount,antiNodeCount);
     }
+    
+    [Theory()]
+    [InlineData("08test.dat",34)]
+    public void Get_AntiNodes_With_Part2_Rules(string fileName, int expectedCount)
+    {
+        var map = new AntennaMap(fileName);
+        var result = map.GetAntiNodesCount_Part2();
+        Assert.Equal(expectedCount, result);
+    }
 }
 
 public class AoCDay08Tests
@@ -141,5 +189,15 @@ public class AoCDay08Tests
         var map = new AntennaMap(fileName);
         var result = map.AntiNodes.Count;
         Assert.Equal(expectedCount,result);
+    }
+    
+    [Theory()]
+    [InlineData("08test.dat",34)]
+    [InlineData("08.dat",839)]
+    public void Part2(string fileName, int expectedCount)
+    {
+        var map = new AntennaMap(fileName);
+        var result = map.GetAntiNodesCount_Part2();
+        Assert.Equal(expectedCount, result);
     }
 }

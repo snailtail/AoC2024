@@ -81,3 +81,17 @@ I'm far from good at TDD, but this could be a good way to actually get some prac
 I'm also using Rider for the first time, and that's a bit unfamiliar to me - but gives some good practice for that also.  
 Fun challenge. Now I haven't even read what Part 2 is asking for yet - I'm a bit afraid to look to be honest... :D  
 
+Well... I was not wrong. :D
+Part 2 kicked me right in the face.  
+I tried all sorts of bad ideas, with the antenna coordinates as starting point. And then for a while using the coordinates for the AntiNodes from Part1 as starting points.  
+That only fueled my impostor syndrome really badly. Then I googled around randomly trying to formulate something I wasn't sure how to express. Like "how do I tell if a point is on the same..." - and then I remembered "vectors".  
+Ah what a revelation - thank you dear brain for not being completely turned off today. So googling onwards from vectors, I got the idea that one could draw a vector from any point to a known antenna coordinate from one of the antenna pairs, and then check if that vector was parallell to the vector between the coordinates in the pair.  
+Now that was a fun trip into forgotten realms, and some new ones as well.  
+I haven't studied maths and geometry and such things in \*hrm\* _"a while"_.  
+
+But after googling some more and trying some stuff out, I found that it could be done in such a simple way that I could understand it.  
+So the code I implemented for part two does just that. It continues on from the previous solution, traversing each point in the grid and checking against all the pairs of coordinates for antennas. Drawing vectors between the current position in the grid, and the first coordinate in the pair, and one between the coordinates in the pair.
+Then checking if these vectors are parallell using the formula a * d == b * c (assuming vector 1 = (a, b) and vector 2 = (c, d)).  
+I believe the term I found on Google was _"checking if the vectors are scalar multiples of each other"_.  
+Phew, that was certainly a weekend kind of problem.  
+But it's always fun when you do give it a go, and you learn something new along the way. I will most likely forget most things about scalar multiples of vectors until next time I need them, but maybe I'll have some tiny fragment of a memory that will help me find the right type of solution faster next time.  
