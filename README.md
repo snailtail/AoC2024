@@ -94,4 +94,14 @@ So the code I implemented for part two does just that. It continues on from the 
 Then checking if these vectors are parallell using the formula a * d == b * c (assuming vector 1 = (a, b) and vector 2 = (c, d)).  
 I believe the term I found on Google was _"checking if the vectors are scalar multiples of each other"_.  
 Phew, that was certainly a weekend kind of problem.  
-But it's always fun when you do give it a go, and you learn something new along the way. I will most likely forget most things about scalar multiples of vectors until next time I need them, but maybe I'll have some tiny fragment of a memory that will help me find the right type of solution faster next time.  
+But it's always fun when you do give it a go, and you learn something new along the way. I will most likely forget most things about scalar multiples of vectors until next time I need them, but maybe I'll have some tiny fragment of a memory that will help me find the right type of solution faster next time.
+
+## --- Day 9: Disk Fragmenter ---  
+FAT tables ahoy!  
+A fun day, I spent a while trying to understand the logic for file id's - and then another good while getting a grasp of the wording for how to calculate the checksum.
+Oh how convenient that the test input only had 9 files in it. :D  
+Trial and error a few runs until I got it right.  
+
+Part 2 was very tricky for me, I almost gave up - but on my coffee break I re-read my solution and realized that I was going through files, moving them to the next available free space - without checking if that free space was farther to the "right" than the file itself...  
+So I had a long discussion with myself and the general message was "Why do you rush so dear sweet summer child?". Trying to squeeze these things in during breakfast, lunch, and coffee breaks makes me sloppy due to "stress" - so I don't stop to check that I've figured out all the probable edge cases.  
+Lesson learned (again, I've taken that same lesson for the umpteenth time now).  
