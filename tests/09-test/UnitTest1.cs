@@ -1,6 +1,3 @@
-using System.Collections.Immutable;
-using System.Runtime.InteropServices.JavaScript;
-
 namespace _09_test;
 
 public class Defragmenter
@@ -207,7 +204,7 @@ public class DefragmenterTest
     [Theory]
     [InlineData("12345","022111222......")]
     [InlineData("2333133121414131402","0099811188827773336446555566..............")]
-    [InlineData("233313312141413140211","000191119882887333744755556666...............")]
+    [InlineData("233313312141413140211","001099111888287733374465555666...............")]
     public void Test_Defragment_Disk(string input, string expectedResult)
     {
         var defragmenter = new Defragmenter(input);
