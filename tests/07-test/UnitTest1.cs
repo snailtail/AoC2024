@@ -25,15 +25,7 @@ public class UnitTest1
     [Fact]
     public void Part1_Check_Final_Result_Is_3749()
     {
-        string[] testinput = @"190: 10 19
-3267: 81 40 27
-83: 17 5
-156: 15 6
-7290: 6 8 6 15
-161011: 16 10 13
-192: 17 8 14
-21037: 9 7 18 13
-292: 11 6 16 20".Split("\r\n");
+        var testinput = File.ReadAllLines("07test.dat");
         var result = BridgeCalibrationDescramblerService.Part1(testinput);
         result.ShouldBe(3749);
     }
@@ -59,15 +51,7 @@ public class UnitTest1
     [Fact]
     public void Part2_Check_Final_Result_Is_11387()
     {
-        string[] testinput = @"190: 10 19
-3267: 81 40 27
-83: 17 5
-156: 15 6
-7290: 6 8 6 15
-161011: 16 10 13
-192: 17 8 14
-21037: 9 7 18 13
-292: 11 6 16 20".Split("\r\n");
+        var testinput = File.ReadAllLines("07test.dat");
         var result = BridgeCalibrationDescramblerService.Part2(testinput);
         result.ShouldBe(11387);
     }
