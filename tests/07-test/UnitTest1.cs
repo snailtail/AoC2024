@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Shouldly;
 
 namespace _07_test;
 
@@ -121,7 +120,7 @@ public class UnitTest1
     {
         (long testValue, List<long> numbers) = BridgeCalibrationDescramblerService.ParseEquation(input);
         bool isValid = BridgeCalibrationDescramblerService.IsValidCalibration(testValue, numbers.ToArray(),false);
-        isValid.ShouldBe(expectedStatus);
+        Assert.Equal(expectedStatus, isValid);
     }
 
     [Fact]
@@ -129,7 +128,7 @@ public class UnitTest1
     {
         var testinput = File.ReadAllLines("07test.dat");
         var result = BridgeCalibrationDescramblerService.Part1(testinput);
-        result.ShouldBe(3749);
+        Assert.Equal(3749,result);
     }
     
     
@@ -147,7 +146,7 @@ public class UnitTest1
     {
         (long testValue, List<long> numbers) = BridgeCalibrationDescramblerService.ParseEquation(input);
         bool isValid = BridgeCalibrationDescramblerService.IsValidCalibration(testValue, numbers.ToArray(),true);
-        isValid.ShouldBe(expectedStatus);
+        Assert.Equal(expectedStatus, isValid);
     }
     
     [Fact]
@@ -155,6 +154,6 @@ public class UnitTest1
     {
         var testinput = File.ReadAllLines("07test.dat");
         var result = BridgeCalibrationDescramblerService.Part2(testinput);
-        result.ShouldBe(11387);
+        Assert.Equal(11387,result);
     }
 }

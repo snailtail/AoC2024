@@ -1,5 +1,5 @@
 using _04.Model;
-using Shouldly;
+
 
 namespace _04_test;
 
@@ -21,7 +21,7 @@ MXMXAXMASX".Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
     public void Part1_Check_Size_Of_CharGrid()
     {
         var mySearcher = new WordSearcher(_testInput);
-        mySearcher.CharGrid.Length.ShouldBe(_testInput.Length);
+        Assert.Equal(_testInput.Length, mySearcher.CharGrid.Length);
     }
     [Fact]
     public void Part1_TestInput_ResultShouldBeEqualTo18()
@@ -29,7 +29,7 @@ MXMXAXMASX".Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
         
         var mySearcher = new WordSearcher(_testInput);
         int result = mySearcher.SolvePart1();
-        result.ShouldBe(18);
+        Assert.Equal(18, result);
     }
 
     [Fact]
@@ -37,6 +37,6 @@ MXMXAXMASX".Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
     {
         var mySearcher = new WordSearcher(_testInput);
         int result = mySearcher.SolvePart2();
-        result.ShouldBe(9);
+        Assert.Equal(9,result);
     }
 }

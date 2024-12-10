@@ -1,5 +1,4 @@
 namespace _02_test;
-using Shouldly;
 public class Day02Tests
 {
     [Theory]
@@ -18,7 +17,8 @@ public class Day02Tests
         var result = uData.IsValid;
 
         // Validate
-        result.ShouldBe(ExpectedResult);
+        Assert.Equal(ExpectedResult, result);
+        
     }
 
 
@@ -38,7 +38,8 @@ public class Day02Tests
         var result = uData.IsAlmostValid;
 
          // Validate
-        result.ShouldBe(ExpectedResult);
+         Assert.Equal(ExpectedResult, result);
+        
     }
 
     [Theory]
@@ -52,7 +53,8 @@ public class Day02Tests
         var result = uData.IsAlmostValid;
 
          // Validate
-        result.ShouldBe(ExpectedResult);
+         Assert.Equal(ExpectedResult, result);
+        
     }
     
     [Theory]
@@ -75,6 +77,7 @@ public class Day02Tests
         var result = uData.IsAlmostValid;
 
         // Validate
-        result.ShouldBeTrue();
+        Assert.True(result);
+        
     }
 }
