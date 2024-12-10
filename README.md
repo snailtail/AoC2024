@@ -81,7 +81,7 @@ I'm far from good at TDD, but this could be a good way to actually get some prac
 I'm also using Rider for the first time, and that's a bit unfamiliar to me - but gives some good practice for that also.  
 Fun challenge. Now I haven't even read what Part 2 is asking for yet - I'm a bit afraid to look to be honest... :D  
 
-Well... I was not wrong. :D
+Well... I was not wrong :D
 Part 2 kicked me right in the face.  
 I tried all sorts of bad ideas, with the antenna coordinates as starting point. And then for a while using the coordinates for the AntiNodes from Part1 as starting points.  
 That only fueled my impostor syndrome really badly. Then I googled around randomly trying to formulate something I wasn't sure how to express. Like "how do I tell if a point is on the same..." - and then I remembered "vectors".  
@@ -99,9 +99,16 @@ But it's always fun when you do give it a go, and you learn something new along 
 ## --- Day 9: Disk Fragmenter ---  
 FAT tables ahoy!  
 A fun day, I spent a while trying to understand the logic for file id's - and then another good while getting a grasp of the wording for how to calculate the checksum.
-Oh how convenient that the test input only had 9 files in it. :D  
+Oh! How convenient that the test input only had 9 files in it :D  
 Trial and error a few runs until I got it right.  
 
 Part 2 was very tricky for me, I almost gave up - but on my coffee break I re-read my solution and realized that I was going through files, moving them to the next available free space - without checking if that free space was farther to the "right" than the file itself...  
 So I had a long discussion with myself and the general message was "Why do you rush so dear sweet summer child?". Trying to squeeze these things in during breakfast, lunch, and coffee breaks makes me sloppy due to "stress" - so I don't stop to check that I've figured out all the probable edge cases.  
 Lesson learned (again, I've taken that same lesson for the umpteenth time now).  
+
+## --- Day 10: Hoof It ---  
+Another recursion day!  
+I recognized that BFS or DFS would probably be what I needed.  
+I decided on DFS and built up an implementation, and after tweaking around a bit I found one that worked well for my test inputs. That one turned out both to work fine for the larger input, and also to be a good stepping stone for part 2.
+For part 1 I only saved the peaks coordinates when I reached them. And it was rather easy to extend this to also saving the entire path as a string, to a hashset.
+That gave me a neat list of all possible paths - so today part 2 was just a small tweak for me.  
