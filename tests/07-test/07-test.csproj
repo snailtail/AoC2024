@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\07\07.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="07.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
