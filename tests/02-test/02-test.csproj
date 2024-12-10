@@ -21,8 +21,6 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\02\02.csproj" />
-  </ItemGroup>
+  <Import Project="../../Build.targets" />
 
 </Project>
