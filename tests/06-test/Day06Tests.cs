@@ -236,7 +236,7 @@ internal class Direction
         }
     }
 }
-public class UnitTest1
+public class Day06Tests
 {
     [Fact]
     public void Part1()

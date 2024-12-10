@@ -233,7 +233,7 @@ public class DefragmenterTest
         Assert.Equal(2858, result);
     }
 }
-public class UnitTest1
+public class Day09Tests
 {
     [Fact]
     public void Part1()

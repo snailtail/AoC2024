@@ -104,7 +104,7 @@ public static class BridgeCalibrationDescramblerService
     }
     
 }
-public class UnitTest1
+public class Day07Tests
 {
     [Theory]
     [InlineData("190: 10 19",true)]
