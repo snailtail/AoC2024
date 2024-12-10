@@ -11,7 +11,7 @@ dotnet new xunit -o $1-test
 cd $1-test
 # Add Build.targets file ref to csproj file
 csproj_file="$1-test.csproj"
-import_line='  <Import Project="../Build.targets" />'
+import_line='  <Import Project="../../Build.targets" />'
 sed -i '' "/<\/Project>/i\\
 $import_line
 " "$csproj_file"
