@@ -1,22 +1,26 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 
 namespace _11_test;
 
 public static class Day11Extensions
 {
-    public static List<string> Blink(this List<string> stones)
+    public static List<string> Blink(this List<string> stones) => stones.AsParallel().SelectMany(stone => stone.ProcessRules()).ToList();
+
+    public static Dictionary<string, long> BlinkParallelOptimized(this Dictionary<string, long> stones)
     {
-        List<string> newList = [];
-        foreach (string stone in stones)
+        var newStones = new ConcurrentDictionary<string, long>(); // Thread-safe dictionary
+
+        Parallel.ForEach(stones, stone =>
         {
-            var processedStones = stone.ProcessRules();
+            var processedStones = stone.Key.ProcessRules(); 
             foreach (var ps in processedStones)
             {
-                newList.Add(ps);
+                newStones.AddOrUpdate(ps, stone.Value, (key, oldValue) => oldValue + stone.Value);
             }
-        }
-        
-        return newList;
+        });
+
+        return newStones.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 
     public static string[] ProcessRules(this string stone)
@@ -91,23 +95,67 @@ public class Day11Tests
     public void Part1Prod()
     {
         List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
+        Dictionary<string, long> stones = [];
+
+        foreach (string s in data)
+        {
+            if (stones.ContainsKey(s))
+            {
+                stones[s] += 1;
+            }
+            else
+            {
+                stones.Add(s, 1);
+            }
+        }
+
+        for (int i = 0; i < 25; i++)
+        {
+            stones = stones.BlinkParallelOptimized();
+        }
+        var result = stones.Select(kvp => kvp.Value).Sum();
+        Assert.Equal(193899, result);
+    }
+
+    [Fact]
+    public void Part1ProdUnOptimized()
+    {
+        List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
         
+
         for (int i = 0; i < 25; i++)
         {
             data = data.Blink();
         }
+        
         Assert.Equal(193899, data.Count);
     }
-    
+
     [Fact]
     public void Part2Prod()
     {
         List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
+        Dictionary<string, long> stones = [];
+
+        foreach(string s in data)
+        {
+            if(stones.ContainsKey(s))
+            {
+                stones[s] += 1;
+            }
+            else
+            {  
+                stones.Add(s, 1);
+            }
+        }
+        
         
         for (int i = 0; i < 75; i++)
         {
-            data = data.Blink();
+            stones = stones.BlinkParallelOptimized();
         }
-        Assert.Equal(55312, data.Count);
+              
+        var result = stones.Select(kvp => kvp.Value).Sum();
+        Assert.Equal(229682160383225, result);
     }
 }
