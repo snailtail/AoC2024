@@ -130,3 +130,4 @@ I tested the solution without the Parallellization, and the runtime went up by a
 I also switched my Part 1 to use the optimized solution, I left the unoptimized solution untouched - just because I'm lazy and don't want to rewrite my unit tests. However they run the same underlying code, so the tests are still valid from my perspective.  
 Part 1 took about 160 ms un-optimized, and 8 ms using the optimized version.  
 
+[![Advent Of Tests 2024](https://github.com/snailtail/AoC2024/actions/workflows/main.yml/badge.svg)](https://github.com/snailtail/AoC2024/actions/workflows/main.yml)
