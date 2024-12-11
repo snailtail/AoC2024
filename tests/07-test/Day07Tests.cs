@@ -106,6 +106,18 @@ public static class BridgeCalibrationDescramblerService
 }
 public class Day07Tests
 {
+
+    private string[] testInput = [
+        "190: 10 19",
+        "3267: 81 40 27",
+        "83: 17 5",
+        "156: 15 6",
+        "7290: 6 8 6 15",
+        "161011: 16 10 13",
+        "192: 17 8 14",
+        "21037: 9 7 18 13",
+        "292: 11 6 16 20",
+        ];
     [Theory]
     [InlineData("190: 10 19",true)]
     [InlineData("3267: 81 40 27", true)]
@@ -126,8 +138,8 @@ public class Day07Tests
     [Fact]
     public void Part1_Check_Final_Result_Is_3749()
     {
-        var testinput = File.ReadAllLines("07test.dat");
-        var result = BridgeCalibrationDescramblerService.Part1(testinput);
+        
+        var result = BridgeCalibrationDescramblerService.Part1(testInput);
         Assert.Equal(3749,result);
     }
     
@@ -152,8 +164,7 @@ public class Day07Tests
     [Fact]
     public void Part2_Check_Final_Result_Is_11387()
     {
-        var testinput = File.ReadAllLines("07test.dat");
-        var result = BridgeCalibrationDescramblerService.Part2(testinput);
+        var result = BridgeCalibrationDescramblerService.Part2(testInput);
         Assert.Equal(11387,result);
     }
 }

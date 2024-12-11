@@ -4,9 +4,9 @@ namespace _10_test;
 
 public class Day10
 {
-    public static int Part1(string inputFilePath)
+    public static int Part1(string[] input)
     {
-        var grid = readGridFromFile(inputFilePath);
+        var grid = parseGrid(input);
 
         (var peaks, _) = FindPaths(grid);
         var scoreSum = 0;
@@ -17,19 +17,16 @@ public class Day10
 
         return scoreSum;
     }
-    public static int Part2(string inputFilePath)
+    public static int Part2(string[] input)
     {
-        var grid = readGridFromFile(inputFilePath);
+        var grid = parseGrid(input);
 
         (_, var paths) = FindPaths(grid);
         return paths.Count;
     }
 
-    private static int[,] readGridFromFile(string path)
+    private static int[,] parseGrid(string[] lines)
     {
-        // Read the file and split into lines
-        string[] lines = File.ReadAllLines(path);
-
         // Get the dimensions of the grid
         int rows = lines.Length;
         int cols = lines[0].Length;
@@ -130,10 +127,20 @@ public class Day10
 
 public class Day10Test
 {
+    private string[] testInput = [
+        "89010123",
+        "78121874",
+        "87430965",
+        "96549874",
+        "45678903",
+        "32019012",
+        "01329801",
+        "10456732",
+        ];
     [Fact]
     public void TestPart1()
     {
-        var result = Day10.Part1("10test.dat");
+        var result = Day10.Part1(testInput);
         Assert.Equal(36,result);
 
     }
@@ -141,25 +148,8 @@ public class Day10Test
     [Fact]
     public void TestPart2()
     {
-        var result = Day10.Part2("10test.dat");
+        var result = Day10.Part2(testInput);
         Assert.Equal(81,result);
 
-    }
-}
-
-public class PartsTest
-{
-    [Fact()]
-    public void Part1()
-    {
-        var result = Day10.Part1("10.dat");
-        Assert.Equal(717,result);
-    }
-    
-    [Fact()]
-    public void Part2()
-    {
-        var result = Day10.Part2("10.dat");
-        Assert.Equal(1686,result);
     }
 }

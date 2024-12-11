@@ -235,23 +235,24 @@ public class DefragmenterTest
 }
 public class Day09Tests
 {
+
+    private string testInput = "2333133121414131402";
+        
     [Fact]
     public void Part1()
-    {
-        var input = File.ReadAllText("09.dat").Trim();
-        var defragmenter = new Defragmenter(input);
+    {   
+        var defragmenter = new Defragmenter(testInput);
         defragmenter.Defragment();
         var result = defragmenter.CheckSum;
-        Assert.Equal(6398608069280, result);
+        Assert.Equal(1928, result);
     }
     
     [Fact]
     public void Part2()
     {
-        var input = File.ReadAllText("09.dat").Trim();
-        var defragmenter = new Defragmenter(input);
+        var defragmenter = new Defragmenter(testInput);
         defragmenter.MoveFilesForPart2();
         var result = defragmenter.CheckSumPart2;
-        Assert.Equal(6427437134372, result);
+        Assert.Equal(2858, result);
     }
 }
