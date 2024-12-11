@@ -112,3 +112,21 @@ I recognized that BFS or DFS would probably be what I needed.
 I decided on DFS and built up an implementation, and after tweaking around a bit I found one that worked well for my test inputs. That one turned out both to work fine for the larger input, and also to be a good stepping stone for part 2.
 For part 1 I only saved the peaks coordinates when I reached them. And it was rather easy to extend this to also saving the entire path as a string, to a hashset.
 That gave me a neat list of all possible paths - so today part 2 was just a small tweak for me.  
+
+## --- Day 11: Plutonian Pebbles ---  
+Part 1 felt "Easy", just mutate some strings according to three rules. But there was this lurking feeling that this might be one of those days where you do something in part1 that's fine to do in a non optimized manner, and then part 2 has you doing more repetitions of the same thing resulting in needing 40 Petabytes of RAM and/or access to all of Google Clouds GPU's.  
+This was the case. 
+I'm not sure how long it would take to solve part2 (if it's even possible) with my first "quick-and-dirty" solution for part 1. It's running on the M1 at home since I left for work - probably won't be done when I get home. :D  
+
+Part 2 wanted us to run 75 iterations of the mutations instead of 25.  
+Somewhere after iteration 27 my computer started to break a small sweat, and from there on it just got expontially worse.  
+I figured I would need to find a smarter solution. So I tried two things:  
+1. First just running parallellized - this did roughly nothing to help. 
+2. Then I tried storing the values in a smarter way, a Dictionary<string,long> - to not build such a huge list of strings, and instead just keep a count of how many times each string occurs.  
+I also slapped on the `Parallel.ForEach` version "just in case" and came down to a runtime of just 216 milliseconds.  
+
+My Dictionary of stones contained 3776 different stones, and the total sum was ridiculous, something like 229 trillion.  
+I tested the solution without the Parallellization, and the runtime went up by about 20% - so that did not do much at all in this scenario, what helped 99.9999% was the smarter storage of the numbers/stones.  
+I also switched my Part 1 to use the optimized solution, I left the unoptimized solution untouched - just because I'm lazy and don't want to rewrite my unit tests. However they run the same underlying code, so the tests are still valid from my perspective.  
+Part 1 took about 160 ms un-optimized, and 8 ms using the optimized version.  
+
