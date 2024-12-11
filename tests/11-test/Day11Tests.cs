@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace _11_test;
 
@@ -50,6 +51,8 @@ public static class Day11Extensions
 public class Day11Tests
 {
 
+    private string testInput = "125 17";
+
     [Theory]
     [InlineData("10", new string[]{"1","0"})]
     [InlineData("0", new string[]{"1"})]
@@ -92,9 +95,9 @@ public class Day11Tests
     }
     
     [Fact]
-    public void Part1Prod()
+    public void Part1()
     {
-        List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
+        List<string> data = testInput.Split(" ").ToList();
         Dictionary<string, long> stones = [];
 
         foreach (string s in data)
@@ -114,13 +117,13 @@ public class Day11Tests
             stones = stones.BlinkParallelOptimized();
         }
         var result = stones.Select(kvp => kvp.Value).Sum();
-        Assert.Equal(193899, result);
+        Assert.Equal(55312, result);
     }
 
     [Fact]
-    public void Part1ProdUnOptimized()
+    public void Part1UnOptimized()
     {
-        List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
+        List<string> data = testInput.Split(" ").ToList();
         
 
         for (int i = 0; i < 25; i++)
@@ -128,34 +131,6 @@ public class Day11Tests
             data = data.Blink();
         }
         
-        Assert.Equal(193899, data.Count);
-    }
-
-    [Fact]
-    public void Part2Prod()
-    {
-        List<string> data = File.ReadAllText("11.dat").Split(" ").ToList();
-        Dictionary<string, long> stones = [];
-
-        foreach(string s in data)
-        {
-            if(stones.ContainsKey(s))
-            {
-                stones[s] += 1;
-            }
-            else
-            {  
-                stones.Add(s, 1);
-            }
-        }
-        
-        
-        for (int i = 0; i < 75; i++)
-        {
-            stones = stones.BlinkParallelOptimized();
-        }
-              
-        var result = stones.Select(kvp => kvp.Value).Sum();
-        Assert.Equal(229682160383225, result);
+        Assert.Equal(55312, data.Count);
     }
 }

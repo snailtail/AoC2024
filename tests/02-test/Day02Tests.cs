@@ -141,10 +141,19 @@ public class Day02Tests
         
     }
 
+    private string[] testInput = [
+                    "7 6 4 2 1",
+                    "1 2 7 8 9",
+                    "9 7 6 2 1",
+                    "1 3 2 4 5",
+                    "8 6 4 4 1",
+                    "1 3 6 7 9",
+                    ];
+
     [Fact]
     public void Part1()
     {
-        unusualData[] uData = File.ReadLines("02test.dat").ToArray().Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray()).Select(arr => new unusualData(arr)).ToArray();
+        unusualData[] uData = testInput.ToArray().Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray()).Select(arr => new unusualData(arr)).ToArray();
         int step1ValidCount = 0;
         foreach(var entry in uData)
         {    
@@ -156,7 +165,7 @@ public class Day02Tests
     [Fact]
     public void Part2()
     {
-        unusualData[] uData = File.ReadLines("02test.dat").ToArray().Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray()).Select(arr => new unusualData(arr)).ToArray();
+        unusualData[] uData = testInput.ToArray().Select(l => l.Split(' ').Select(i => int.Parse(i)).ToArray()).Select(arr => new unusualData(arr)).ToArray();
         
         int step2ValidCount = 0;
         foreach(var entry in uData)

@@ -238,10 +238,23 @@ internal class Direction
 }
 public class Day06Tests
 {
+
+    private string[] testInput = [
+                    "....#.....",
+                    ".........#",
+                    "..........",
+                    "..#.......",
+                    ".......#..",
+                    "..........",
+                    ".#..^.....",
+                    "........#.",
+                    "#.........",
+                    "......#...",
+            ];
     [Fact]
     public void Part1()
     {
-        var mapdata = File.ReadAllLines("06test.dat").Select(line => line.ToCharArray()).ToArray();
+        var mapdata = testInput.Select(line => line.ToCharArray()).ToArray();
         var result = SuitManufacturingLabMapHandler.walkRegularPath(mapdata);
         Assert.Equal(41,result.Count);
     }
@@ -249,7 +262,7 @@ public class Day06Tests
     [Fact]
     public void Part2()
     {
-        var mapdata = File.ReadAllLines("06test.dat").Select(line => line.ToCharArray()).ToArray();
+        var mapdata = testInput.Select(line => line.ToCharArray()).ToArray();
         var resultPart2 = SuitManufacturingLabMapHandler.GetCombinationsOfPossibleLoops(mapdata);
         Assert.Equal(6,resultPart2);
     }

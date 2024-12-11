@@ -1,9 +1,8 @@
 namespace _01_test;
 public static class Day01
 {
-    public static (int Part1, int Part2) Solve(string inputFile)
+    public static (int Part1, int Part2) Solve(string[] lines)
     {
-        var lines = File.ReadAllLines(inputFile);
         int[] left = new int[lines.Length];
         int[] right = new int[lines.Length];
         for(int i = 0; i < lines.Length; i++){
@@ -27,23 +26,26 @@ public static class Day01
 }
 public class Day01Tests
 {
+
+    string[] testInput = [
+                    "3   4",
+                    "4   3",
+                    "2   5",
+                    "1   3",
+                    "3   9",
+                    "3   3",
+                    ];
     [Fact]
     public void Part1()
     {
-        (int result,_) = Day01.Solve("01test.dat");
+        (int result,_) = Day01.Solve(testInput);
         Assert.Equal(11,result);
     }
     [Fact]
     public void Part2()
     {
-        (_,int result) = Day01.Solve("01test.dat");
+        (_,int result) = Day01.Solve(testInput);
         Assert.Equal(13,result);
     }
     
-    [Fact]
-    public void Part2_Prod()
-    {
-        (_,int result) = Day01.Solve("01.dat");
-        Assert.Equal(24349736,result);
-    }
 }

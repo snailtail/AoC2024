@@ -5,9 +5,8 @@ public class AntennaMap
     private readonly char[][] _mapData;
     public Dictionary<char, List<(int,int)>> FrequencyMap { get; } = new(); // Char = [(rowX,colY),(rowX,colY)]
     private Dictionary<char, List<((int, int), (int, int))>> FrequencyWithCoordinatePairs { get; } // Char = [(Coordinate1, Coordinate2),(Coordinate1, Coordinate2)] 
-    public AntennaMap(string inputFile)
+    public AntennaMap(string[] input)
     {
-        var input = File.ReadAllLines(inputFile);
         _mapData = input.Select(line => line.ToCharArray()).ToArray();
         
         // get all unique frequencies (anything that is not a '.' in the map data)
@@ -121,10 +120,25 @@ public class AntennaMap
 
 public class MapTests
 {
+
+    private string[] testInput = [
+        "............",
+        "........0...",
+        ".....0......",
+        ".......0....",
+        "....0.......",
+        "......A.....",
+        "............",
+        "............",
+        "........A...",
+        ".........A..",
+        "............",
+        "............",
+        ];
     [Fact]
     public void Part1_Find_All_Unique_Chars()
     {
-        var map = new AntennaMap("08test.dat");
+        var map = new AntennaMap(testInput);
         var frequencyKeys = map.FrequencyMap.Keys.ToArray();
         Array.Sort(frequencyKeys);
         Assert.Equal(2, frequencyKeys.Length);
@@ -137,7 +151,7 @@ public class MapTests
     [InlineData('A',3)]
     public void Part1_Check_Antenna_Count_By_Frequency(char frequency, int expectedCount)
     {
-        var map = new AntennaMap("08test.dat");
+        var map = new AntennaMap(testInput);
         var count = map.FrequencyMap[frequency].Count;
         Assert.Equal(expectedCount,count);
     }
@@ -145,7 +159,7 @@ public class MapTests
     [Fact]
     public void Part1_Check_Coordinates_For_Frequency0()
     {
-        var map = new AntennaMap("08test.dat");
+        var map = new AntennaMap(testInput);
         var coordinates = map.FrequencyMap['0'];
         var expectedCoordinates = new List<(int, int)>() { (1, 8), (2, 5), (3, 7), (4, 4) };
         Assert.Equal(expectedCoordinates,coordinates);
@@ -154,7 +168,7 @@ public class MapTests
     [Fact]
     public void Part1_Check_Coordinates_For_FrequencyA()
     {
-        var map = new AntennaMap("08test.dat");
+        var map = new AntennaMap(testInput);
         var coordinates = map.FrequencyMap['A'];
         var expectedCoordinates = new List<(int, int)>() { (5, 6), (8, 8), (9, 9) };
         Assert.Equal(expectedCoordinates,coordinates);
@@ -163,41 +177,51 @@ public class MapTests
     [Fact]
     public void Part1_Check_AntiNodeCount()
     {
-        var map = new AntennaMap("08test.dat");
+        var map = new AntennaMap(testInput);
         var antiNodeCount = map.AntiNodes.Count;
         var expectedAntiNodeCount = 14;
         Assert.Equal(expectedAntiNodeCount,antiNodeCount);
     }
     
-    [Theory()]
-    [InlineData("08test.dat",34)]
-    public void Get_AntiNodes_With_Part2_Rules(string fileName, int expectedCount)
+    [Fact()]
+    public void Get_AntiNodes_With_Part2_Rules()
     {
-        var map = new AntennaMap(fileName);
+        var map = new AntennaMap(testInput);
         var result = map.GetAntiNodesCount_Part2();
-        Assert.Equal(expectedCount, result);
+        Assert.Equal(34, result);
     }
 }
 
 public class AoCDay08Tests
 {
-    [Theory()]
-    [InlineData("08test.dat",14)]
-    [InlineData("08.dat",252)]
-    public void Part1(string fileName, int expectedCount)
+    private string[] testInput = [
+        "............",
+        "........0...",
+        ".....0......",
+        ".......0....",
+        "....0.......",
+        "......A.....",
+        "............",
+        "............",
+        "........A...",
+        ".........A..",
+        "............",
+        "............",
+        ];
+    
+    [Fact()]    
+    public void Part1()
     {
-        var map = new AntennaMap(fileName);
+        var map = new AntennaMap(testInput);
         var result = map.AntiNodes.Count;
-        Assert.Equal(expectedCount,result);
+        Assert.Equal(14,result);
     }
     
-    [Theory()]
-    [InlineData("08test.dat",34)]
-    [InlineData("08.dat",839)]
-    public void Part2(string fileName, int expectedCount)
+    [Fact()]
+    public void Part2()
     {
-        var map = new AntennaMap(fileName);
+        var map = new AntennaMap(testInput);
         var result = map.GetAntiNodesCount_Part2();
-        Assert.Equal(expectedCount, result);
+        Assert.Equal(34, result);
     }
 }
