@@ -150,3 +150,36 @@ So I spent the majority of my time rewriting my `IsPlotCorner` method and coming
 
 I think the example inputs from the puzzle contains all the tricky corner cases, I just didn't think to implement tests for all of them until I encountered new errors one after the other.  
 But after implementing tests for all the example inputs and working out how to determine what is and is not a corner, I had a version that worked well for my real input as well.    
+
+
+## --- Day 13: Claw Contraption ---  
+
+Good lord...  
+This was way out of my league!  
+
+### Part 1  
+
+First I thought this would be another recursive method. But as I couldn't wrap my head around how to calculate this, I didn't even start down that path.
+Instead I spent probably around 1.5 hours fiddling around with my own silly ideas, dabbling with "Greatest Common Divisor" and "Least common multiple", multiplying, dividing and trying to find some sort of pattern or relationship.  
+Nada. Nothing to be found there apart from headaches.    
+So I started trying to Google for  tips on how to solve an equation with two unknown parameters. Or whatever it's called.  
+I ended up with a whole bunch of browser tabs, with everything from something like 10 different Youtube videos, this page about the ["Euclidean algorithm"](https://en.wikipedia.org/wiki/Euclidean_algorithm), and a page on Matrix inversions - which is what I think led me on to [Cramer's rule](https://en.wikipedia.org/wiki/Cramer%27s_rule)    
+
+At some point I tried to describe the nature of my challenge to Chat GPT and asked if I could possibly solve such a problem using GCD and/or Cramer's rule. To which the answer was yes.
+First it led me down a very dark path for something called [Diophantine euqation](https://en.wikipedia.org/wiki/Diophantine_equation) and I ended up spending at least another fruitless hour there before deleting everyting and closing a lot of browser tabs.  
+Long story already a bit too long, but at last I tried to implement Cramer's rule as a method in C# - It went pretty okay I guess, but I resorted to using Chat GPT to debug/rewrite and get a working implementation of that method in the end.  
+So anyway that took care of Part 1.  
+Now for Part 2 I'm not sure what will come next.
+
+### Part 2  
+
+Step 1: Okay... larger numbers -> Replace int with long.    
+Step 2: Pray - +20 trillion in manhattan distance is quite the increase from part 1... :D    
+Step 3: Be amazed. It turns out that the equation I used doesn't really care about the size of the inputs - as a recursive method definitely would have if I had gone down that path.      
+Luckily I'm too bad at maths to even begin implementing a recursive function, so hence the googling for Part 1.  
+Just had to adjust the ints to longs, and add the offset of 10 trillion to the X and Y coordinates for the Prizes.  
+Then just re-run and stare in wonder at the large number that came out.  
+Where are we ever going to get all those tokens?  
+Hopefully we can load them digitally on to some kind of plastic card like we did this summer when we spent some time in the arcade on Santa Monica Pier.  
+Much better than lugging around a pile of tokens that would reach something like halfway to the moon if stacked on top of each other... :D  
+
