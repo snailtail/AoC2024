@@ -132,3 +132,21 @@ I also switched my Part 1 to use the optimized solution, I left the unoptimized 
 Part 1 took about 160 ms un-optimized, and 8 ms using the optimized version.  
 
 
+## --- Day 12: Garden Groups ---  
+
+Wow! :D
+Got a very late start due to an intense migraine yesterday, so I started a day late with this one.  
+
+For Part 1 I had a feeling that some sort of flood fill could be helpful. So I started researching and implementing one of those.  
+That turned out to be something I could use, it took a lot of tweaking to get it right - I'll blame it on my "Migraine hangover" ;)  
+
+For Part 2 it got a lot trickier - fiding "sides" for the shapes/plots in the grid was not as straightforward as I would have wanted.  
+But I googled and drew some sketches with pen and paper to visualise - and came to the conclusion that the amount of corners on a shape is equal to the amount of sides.  
+
+That helped a lot :D  
+Then it turns out there are some nasty corner cases, for example shapes that are "lines" in the grid. (I solved this by quadrupling the grid - each pixel became a 2x2 blob of pixels instead).    
+
+So I spent the majority of my time rewriting my `IsPlotCorner` method and coming up with new testcases for corner cases (he he he).  
+
+I think the example inputs from the puzzle contains all the tricky corner cases, I just didn't think to implement tests for all of them until I encountered new errors one after the other.  
+But after implementing tests for all the example inputs and working out how to determine what is and is not a corner, I had a version that worked well for my real input as well.    
