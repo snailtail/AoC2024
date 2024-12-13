@@ -19,7 +19,8 @@ public static class ClawMachineExtensions
     
         // Check if the calculated presses satisfy the prize position
         if ((machine.ButtonA.X * pressesA + machine.ButtonB.X * pressesB, 
-                machine.ButtonA.Y * pressesA + machine.ButtonB.Y * pressesB) == machine.Prize)
+                machine.ButtonA.Y * pressesA + machine.ButtonB.Y * pressesB) 
+            == machine.Prize)
         {
             // Calculate the total cost (3 tokens per A press, 1 token per B press)
             return pressesA * 3 + pressesB;
@@ -134,9 +135,7 @@ public class UnitTest1
     [Fact]
     public void TestMinimumTokensForAllMachines()
     {
-        var realInput = File.ReadAllLines("13.dat");
-        var machines = ClawMachineParser.Parse(realInput);
-        //var machines = ClawMachineParser.Parse(testInput);
+        var machines = ClawMachineParser.Parse(testInput);
         long result = 0;
         foreach (var machine in machines)
         {
