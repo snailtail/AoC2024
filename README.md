@@ -183,3 +183,13 @@ Where are we ever going to get all those tokens?
 Hopefully we can load them digitally on to some kind of plastic card like we did this summer when we spent some time in the arcade on Santa Monica Pier.  
 Much better than lugging around a pile of tokens that would reach something like halfway to the moon if stacked on top of each other... :D  
 
+## --- Day 14: Restroom Redoubt ---  
+
+More grids - sort of.  
+Tracking movements of robots in a grid of a certain size.  
+Part 1 was very easy, just keep track of the robots positions - made some classes and extensions for it to be easy to run tests on them.  
+Part 2 was just freaky. I had to start printing "frames" of the grid to check for a pattern resembling a christmas tree. :D  
+I just did that, and then guessed that more than 63% of the robots should be in the lower two quadrants when a tree pattern was displayed in the output grid.  
+I was probably lucky, because the tree was smaller than I expected - and more concentrated to the middle of the grid.  
+But I just looped the test until I saw a christmas tree in the output, and then recorded how many "seconds" had elapsed.  
+Fun day - nice with an easy challenge to switch things up from day 13... :D  
