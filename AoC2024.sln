@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12-test", "tests\12-test\12
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13-test", "tests\13-test\13-test.csproj", "{75317D32-4FA4-42CC-8F53-A93E4155FB31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day14-test", "tests\day14-test\day14-test.csproj", "{C4D38026-BAA0-43C0-80CC-97EAFBA26304}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14-test", "tests\14-test\14-test.csproj", "{C4D38026-BAA0-43C0-80CC-97EAFBA26304}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
