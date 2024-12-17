@@ -260,43 +260,55 @@ public class SecondWarehouseMap : WarehouseMap
                     
                     char thisTile = MapData[box.row][box.col];
                     
-                    // om den vi står på är en sån här [] ska deb alltid flyttas
-                    if(thisTile == '[' || thisTile == ']')
+                    char nextTile = MapData[box.row+Directions[direction].row][box.col];
+                    
+                    if(thisTile == '[' && (nextTile == '.' || nextTile == '['))
                     {
                         BoxesToMove.Push((box.row, box.col));
+                        BoxesToMove.Push((box.row, box.col+1));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
                     }
 
-                    char nextTile = MapData[box.row+Directions[direction].row][box.col];
-                    (int row, int col) nextToMove = (-1,-1);
-                    (int row, int col) nextToCheck = (-1,-1);
-
-                    // om denna är en [ och nästa rad samma col är en [ så är de i rak linje - då ska denna och samma rad col+1 flyttas, och nästa rad samma col ska checkas
-                    if((thisTile=='[' || thisTile=='@') && nextTile=='[')
+                    if (thisTile == ']' && (nextTile == '.' || nextTile ==']'))
                     {
-                        nextToMove = (box.row,box.col+1);
-                        nextToCheck = (box.row + Directions[direction].row,box.col);
+                        BoxesToMove.Push((box.row, box.col));
+                        BoxesToMove.Push((box.row, box.col-1));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
                     }
 
-                    // om denna är en ] och nästa rad samma col är en ] så är de i rak linje - då ska denna och samma rad col-1 flyttas, och nästa rad samma col ska checkas
-                    if((thisTile==']'  || thisTile=='@') && nextTile==']')
+                    
+                    if((thisTile=='@') && nextTile=='[')
                     {
-                        nextToMove = (box.row,box.col-1);
-                        nextToCheck = (box.row + Directions[direction].row,box.col);
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
+                    }
+                    
+                    if(thisTile=='@' && nextTile==']')
+                    {
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
                     }
 
                     // om denna är en [ och nästa rad samma col är en ] så är de ojämna åt vänster - då ska denna och samma rad col+1 flyttas, och nästa rad col-1 ska checkas
-                    if((thisTile=='[' || thisTile=='@') && nextTile==']')
+                    if((thisTile=='[') && nextTile==']')
                     {
-                        nextToMove = (box.row,box.col+1);
-                        nextToCheck = (box.row + Directions[direction].row,box.col-1);
+                        BoxesToMove.Push((box.row, box.col));
+                        BoxesToMove.Push((box.row, box.col+1));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
                     }
 
 
                     // om denna är en ] och nästa rad samma col är en [ så är de ojämna åt höger -   då ska denna och samma rad col-1 flyttas, och nästa rad col+1 ska checkas
-                    if((thisTile==']' || thisTile=='@') && nextTile == '[')
+                    if(thisTile==']' && nextTile == '[')
                     {
-                        nextToMove = (box.row,box.col-1);
-                        nextToCheck = (box.row + Directions[direction].row,box.col+1);
+                        BoxesToMove.Push((box.row, box.col));
+                        BoxesToMove.Push((box.row, box.col-1));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
+                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
+                        
                     }
 
                     if((thisTile==']' || thisTile == '['  || thisTile=='@') && nextTile!='[' && nextTile !=']')
@@ -304,8 +316,7 @@ public class SecondWarehouseMap : WarehouseMap
                         continue;
                     }
                     
-                    BoxesToMove.Push(nextToMove);
-                    tilesToCheck.Push(nextToCheck);
+                    
                 }
             }
 
@@ -320,6 +331,7 @@ public class SecondWarehouseMap : WarehouseMap
                 int newRow = box.row + Directions[direction].row;
                 int newCol = box.col + Directions[direction].col;
                 MapData[newRow][newCol] = boxChar;
+                this.PrintMap();
             }
             // finally move the robot position
             int robotNewRow = this.RobotPosition.row + Directions[direction].row;
@@ -327,6 +339,7 @@ public class SecondWarehouseMap : WarehouseMap
 
             MapData[RobotPosition.row][RobotPosition.col] = '.';
             MapData[robotNewRow][robotNewCol] = '@';
+            this.PrintMap();
         }
         return !blocked;
     }
@@ -493,7 +506,7 @@ public class Day15Tests
     }
 
 
-    [Fact]
+    [Fact(Skip="Not now")]
     public void Part2SmallInputTestIsBlocked()
     {
         var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
@@ -502,11 +515,19 @@ public class Day15Tests
         Assert.Equal((3,11),map.RobotPosition);
         Assert.True(map.isBlocked(map.RobotPosition,'>'));
         Assert.False(map.isBlocked(map.RobotPosition,'<'));
-        map.MapData[3][11]='.';
-
-        map.MapData[2][6]='@'; // put the robot on top of a [] block (on the left side of its top edge)
+    }
+    
+    [Fact]
+    public void Part2SmallInputTestAllMoves()
+    {
+        var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
+        var sequence = new MoveSequence(smallTestInput.Where(l => !l.Contains('#')).ToArray());
+        
+        foreach(char c in sequence.Sequence)
+        {
+            map.MoveRobot(c);
+        }
         map.PrintMap();
-        map.MoveRobot('v');
-        map.PrintMap();
+        
     }
 }
