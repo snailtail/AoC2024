@@ -1,6 +1,8 @@
-﻿namespace _15_test;
+﻿using System.Text;
 
-public class WarehouseMap(string[] input)
+namespace _15_test;
+
+public class WarehouseMap
 {
     public Dictionary<char,(int row,int col)> Directions = new()
     {
@@ -12,23 +14,29 @@ public class WarehouseMap(string[] input)
 
     public void PrintMap()
     {
-        for(int row = 0; row < _mapData.Length;row++)
+        for(int row = 0; row < MapData.Length;row++)
         {
-            for(int col = 0; col < _mapData[row].Length;col++)
+            for(int col = 0; col < MapData[row].Length;col++)
             {
-                Console.Write(_mapData[row][col]);
+                Console.Write(MapData[row][col]);
             }
             Console.Write("\r\n");
         }
     }
-    char[][] _mapData =  input.Select(l => l.ToCharArray()).ToArray();
-    public char[][] MapData => _mapData;
-    public (int row, int col) RobotPosition => _mapData
+    private char[][] _mapData;
+    public WarehouseMap(string[] input)
+    {
+        this._mapData=  input.Select(l => l.ToCharArray()).ToArray();
+    }
+
+
+    public virtual char[][] MapData => _mapData;
+    public (int row, int col) RobotPosition => MapData
             .SelectMany((row, rowIndex) =>
                 row.Select((value, columnIndex) => new { value, rowIndex, columnIndex }))
             .Where(cell => cell.value == '@').Select(coord => (coord.rowIndex, coord.columnIndex)).First();
 
-    public List<(int row, int col)> OCoordinates => _mapData
+    public List<(int row, int col)> OCoordinates => MapData
             .SelectMany((row, rowIndex) => 
                 row.Select((value, colIndex) => new { value, rowIndex, colIndex }))
             .Where(cell => cell.value == 'O')
@@ -37,33 +45,33 @@ public class WarehouseMap(string[] input)
 
     public int GPSCoordinateSum => OCoordinates.Select(oc => oc.row * 100 + oc.col).Sum();
 
-    public bool isBlocked((int row, int col) coordinate, char direction)
+    public virtual bool isBlocked((int row, int col) coordinate, char direction)
     {
         var checkRow = coordinate.row + Directions[direction].row;
         var checkCol = coordinate.col + Directions[direction].col;
 
-        if(_mapData[checkRow][checkCol]=='#')
+        if(MapData[checkRow][checkCol]=='#')
         {
             return true;
         }
         
-        if(_mapData[checkRow][checkCol]=='.')
+        if(MapData[checkRow][checkCol]=='.')
         {
             return false;
         }
 
-        if(_mapData[checkRow][checkCol]=='O')
+        if(MapData[checkRow][checkCol]=='O')
         {
             return isBlocked((checkRow,checkCol), direction);
         }
         return false;
     }
 
-    public bool isNextToBox((int row, int col) coordinate, char direction)
+    public virtual bool isNextToBox((int row, int col) coordinate, char direction)
     {
         var checkRow = coordinate.row + Directions[direction].row;
         var checkCol = coordinate.col + Directions[direction].col;
-        if(_mapData[checkRow][checkCol]=='O')
+        if(MapData[checkRow][checkCol]=='O')
         {
             return true;
         }
@@ -71,7 +79,7 @@ public class WarehouseMap(string[] input)
         return false;
     }
 
-    public bool MoveRobot(char direction)
+    public virtual bool MoveRobot(char direction)
     {
         var blocked = isBlocked(this.RobotPosition,direction);
         Stack<(int row, int col)> BoxesToMove = new();
@@ -96,23 +104,235 @@ public class WarehouseMap(string[] input)
             {
                 var box = BoxesToMove.Pop();
 
-                _mapData[box.row][box.col] = '.';
+                MapData[box.row][box.col] = '.';
                 int newRow = box.row + Directions[direction].row;
                 int newCol = box.col + Directions[direction].col;
-                _mapData[newRow][newCol] = 'O';
+                MapData[newRow][newCol] = 'O';
             }
             // finally move the robot position
             int robotNewRow = this.RobotPosition.row + Directions[direction].row;
             int robotNewCol = this.RobotPosition.col + Directions[direction].col;
 
-            _mapData[RobotPosition.row][RobotPosition.col] = '.';
-            _mapData[robotNewRow][robotNewCol] = '@';
+            MapData[RobotPosition.row][RobotPosition.col] = '.';
+            MapData[robotNewRow][robotNewCol] = '@';
         }
         return !blocked;
     }
 
 }
 
+
+public class SecondWarehouseMap : WarehouseMap
+{
+    public char[][] _extendedMapdata;
+
+    public override char[][] MapData => _extendedMapdata;
+    public SecondWarehouseMap(string[] input) : base(input)
+    {
+        char[][] _initialMapData; 
+        _initialMapData = input.Select(l => l.ToCharArray()).ToArray();
+        _initialMapData = new char[input.Length][];
+        
+        for(int l = 0; l < input.Length; l++)
+        {
+            StringBuilder sb = new();
+            var line = input[l];
+            foreach(char c in line)
+            {
+                string extendedChars = c switch{
+                    '#' => "##",
+                    'O' => "[]",
+                    '.' => "..",
+                    '@' => "@.",
+                    _ => "\0"
+                };
+                sb.Append(extendedChars);
+            }
+            _initialMapData[l]=sb.ToString().ToCharArray();
+        }
+        this._extendedMapdata = _initialMapData.Select(l => l).ToArray();
+
+    }
+
+    public override bool isBlocked((int row, int col) coordinate, char direction)
+    {
+        var checkRow = coordinate.row + Directions[direction].row;
+        var checkCol = coordinate.col + Directions[direction].col;
+
+        // The contents of this exact coordinate
+        char thisTile = MapData[coordinate.row][coordinate.col];
+
+        // the tile we are checking initially
+        char nextTile = MapData[checkRow][checkCol];
+        
+        // is this coordinate the robot itself?
+        var isRobot = thisTile == '@';
+        
+        // om thisTile = @ så är vi roboten
+
+        if(nextTile=='#')
+        {
+            return true;
+        }
+        
+        if(nextTile=='.')
+        {
+            return false;
+        }
+
+        if(nextTile=='[' || nextTile==']')
+        {
+            // if we are moving left or right we can just go on checking on one row
+            if(direction=='<' || direction=='>')
+            {
+                return isBlocked((checkRow,checkCol), direction);
+            }
+            //if we are moving up or down we need to account for "skewed" boxes.
+            /*
+                For example if the robot is here and moving up:
+                #######
+                #.....#
+                #[][].#
+                #.[]..#
+                #..@..#
+                #.....#
+                It will see an ] above it
+                then we will need to check above the tile to the left of it as well
+                so based on whether the next tile contains a ] or [ we will need to calculate
+                another coordinate to the left or right of it, which also needs to be checked.
+                might work with an OR - since we are only checking two tiles - that should propagate outwards recursively from there.
+                return isBlocked((x,y),direction) || isBlocked((x,y))
+            */
+            int checkSecondColumn = nextTile == ']' ? checkCol-1 : checkCol+1;
+            return isBlocked((checkRow,checkCol), direction) || isBlocked((checkRow,checkSecondColumn), direction);
+        }
+        return false;
+    }
+
+    public override bool isNextToBox((int row, int col) coordinate, char direction)
+    {
+        var checkRow = coordinate.row + Directions[direction].row;
+        var checkCol = coordinate.col + Directions[direction].col;
+        var checkTile = MapData[checkRow][checkCol];
+
+        if(checkTile=='[' || checkTile==']')
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public override bool MoveRobot(char direction)
+    {
+        var blocked = isBlocked(this.RobotPosition,direction);
+        Stack<(int row, int col)> BoxesToMove = new();
+        if(!blocked)
+        {
+            // Use IsNextToBox((int, int) coord, Direction direction) that checks if there is a box next to us in the direction we're moving.
+            // For each true, add that coordinate to a stack and continue until false.
+            // Then process the stack and move those boxes one step in the intended direction.
+            // Lastly move the robot
+            
+            int checkRow = RobotPosition.row;
+            int checkCol = RobotPosition.col;
+
+            // for left-right we only need to check on one row.
+            if(direction == '<' || direction =='>')
+            {
+                while(this.isNextToBox((checkRow,checkCol),direction))
+                {
+                    checkRow = checkRow + Directions[direction].row;
+                    checkCol = checkCol + Directions[direction].col;
+                    BoxesToMove.Push((checkRow, checkCol));
+                }
+            }
+
+            // for up-down we need to check more...
+             if(direction == 'v' || direction =='^')
+            {
+
+                
+                Stack<(int row, int col)> tilesToCheck = new();
+                tilesToCheck.Push((checkRow,checkCol));
+                while(tilesToCheck.Count > 0)
+                {
+                    var box = tilesToCheck.Pop();
+                    
+                    char thisTile = MapData[box.row][box.col];
+                    
+                    // om den vi står på är en sån här [] ska deb alltid flyttas
+                    if(thisTile == '[' || thisTile == ']')
+                    {
+                        BoxesToMove.Push((box.row, box.col));
+                    }
+
+                    char nextTile = MapData[box.row+Directions[direction].row][box.col];
+                    (int row, int col) nextToMove = (-1,-1);
+                    (int row, int col) nextToCheck = (-1,-1);
+
+                    // om denna är en [ och nästa rad samma col är en [ så är de i rak linje - då ska denna och samma rad col+1 flyttas, och nästa rad samma col ska checkas
+                    if((thisTile=='[' || thisTile=='@') && nextTile=='[')
+                    {
+                        nextToMove = (box.row,box.col+1);
+                        nextToCheck = (box.row + Directions[direction].row,box.col);
+                    }
+
+                    // om denna är en ] och nästa rad samma col är en ] så är de i rak linje - då ska denna och samma rad col-1 flyttas, och nästa rad samma col ska checkas
+                    if((thisTile==']'  || thisTile=='@') && nextTile==']')
+                    {
+                        nextToMove = (box.row,box.col-1);
+                        nextToCheck = (box.row + Directions[direction].row,box.col);
+                    }
+
+                    // om denna är en [ och nästa rad samma col är en ] så är de ojämna åt vänster - då ska denna och samma rad col+1 flyttas, och nästa rad col-1 ska checkas
+                    if((thisTile=='[' || thisTile=='@') && nextTile==']')
+                    {
+                        nextToMove = (box.row,box.col+1);
+                        nextToCheck = (box.row + Directions[direction].row,box.col-1);
+                    }
+
+
+                    // om denna är en ] och nästa rad samma col är en [ så är de ojämna åt höger -   då ska denna och samma rad col-1 flyttas, och nästa rad col+1 ska checkas
+                    if((thisTile==']' || thisTile=='@') && nextTile == '[')
+                    {
+                        nextToMove = (box.row,box.col-1);
+                        nextToCheck = (box.row + Directions[direction].row,box.col+1);
+                    }
+
+                    if((thisTile==']' || thisTile == '['  || thisTile=='@') && nextTile!='[' && nextTile !=']')
+                    {
+                        continue;
+                    }
+                    
+                    BoxesToMove.Push(nextToMove);
+                    tilesToCheck.Push(nextToCheck);
+                }
+            }
+
+
+            // Move the boxes
+
+            while(BoxesToMove.Count > 0)
+            {
+                var box = BoxesToMove.Pop();
+                char boxChar = MapData[box.row][box.col];
+                MapData[box.row][box.col] = '.';
+                int newRow = box.row + Directions[direction].row;
+                int newCol = box.col + Directions[direction].col;
+                MapData[newRow][newCol] = boxChar;
+            }
+            // finally move the robot position
+            int robotNewRow = this.RobotPosition.row + Directions[direction].row;
+            int robotNewCol = this.RobotPosition.col + Directions[direction].col;
+
+            MapData[RobotPosition.row][RobotPosition.col] = '.';
+            MapData[robotNewRow][robotNewCol] = '@';
+        }
+        return !blocked;
+    }
+
+
+}
 public class MoveSequence(string[] input)
 {
     char[] _sequence = String.Join("",input).ToCharArray();
@@ -147,6 +367,19 @@ public class Day15Tests
         "v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"
     ];
 
+    private string[] smallTestInput = [
+        "#######",
+        "#...#.#",
+        "#.....#",
+        "#..OO@#",
+        "#..O..#",
+        "#.....#",
+        "#######",
+        "",
+        "<vv<<^^<<^^"
+    ];
+
+#region Part1Tests
     [Fact]
     public void TestParsing()
     {
@@ -216,7 +449,6 @@ public class Day15Tests
         {
             map.MoveRobot(c);
         }
-        map.PrintMap();
         Assert.Equal('O',map.MapData[8][8]);
         Assert.Equal((4,3),map.RobotPosition);
         Assert.Contains((1,2),map.OCoordinates);
@@ -234,7 +466,47 @@ public class Day15Tests
         {
             map.MoveRobot(c);
         }
-        map.PrintMap();
         Assert.Equal(10092,map.GPSCoordinateSum);
+    }
+    #endregion
+
+    [Fact()]
+    public void Part2Parsing()
+    {
+        var map = new SecondWarehouseMap(testInput.Where(l=> l.Contains('#')).ToArray());
+        Assert.NotNull(map);
+        Assert.Equal('#',map.MapData[1][0]);
+        Assert.Equal('#',map.MapData[1][1]);
+        Assert.Equal('[',map.MapData[1][6]);
+        Assert.Equal(']',map.MapData[1][7]);
+        Assert.Equal('.',map.MapData[8][17]);
+        Assert.Equal('#',map.MapData[8][18]);
+        Assert.Equal('@',map.MapData[4][8]);
+        Assert.Equal((4,8),map.RobotPosition);
+    }
+
+    [Fact]
+    public void Part2SmallInputParsing()
+    {
+        var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
+        Assert.Equal((3,10),map.RobotPosition);
+    }
+
+
+    [Fact]
+    public void Part2SmallInputTestIsBlocked()
+    {
+        var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
+        map.PrintMap();
+        map.MoveRobot('>');
+        Assert.Equal((3,11),map.RobotPosition);
+        Assert.True(map.isBlocked(map.RobotPosition,'>'));
+        Assert.False(map.isBlocked(map.RobotPosition,'<'));
+        map.MapData[3][11]='.';
+
+        map.MapData[2][6]='@'; // put the robot on top of a [] block (on the left side of its top edge)
+        map.PrintMap();
+        map.MoveRobot('v');
+        map.PrintMap();
     }
 }
