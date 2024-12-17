@@ -193,3 +193,11 @@ I just did that, and then guessed that more than 63% of the robots should be in 
 I was probably lucky, because the tree was smaller than I expected - and more concentrated to the middle of the grid.  
 But I just looped the test until I saw a christmas tree in the output, and then recorded how many "seconds" had elapsed.  
 Fun day - nice with an easy challenge to switch things up from day 13... :D  
+
+## --- Day 15: Warehouse Woes ---  
+
+Again attempting this puzzle a few days after it's original release because of - well life. :D  
+
+Part 1 was again quite straightforward. Just handle a map and some basic checking if moves can be made, and stuff like that. Again TDD helps a lot with figuring out where to go next. Starting with basic tests and building up to more complete solutions.  
+
+Part 2 looks a bit trickier... I'm going to have to check that out later, after work or during lunch break maybe. The movement stuff is going to be a lot more complex I think.  
