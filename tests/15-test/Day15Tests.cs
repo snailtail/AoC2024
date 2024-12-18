@@ -36,14 +36,14 @@ public class WarehouseMap
                 row.Select((value, columnIndex) => new { value, rowIndex, columnIndex }))
             .Where(cell => cell.value == '@').Select(coord => (coord.rowIndex, coord.columnIndex)).First();
 
-    public List<(int row, int col)> OCoordinates => MapData
+    public virtual List<(int row, int col)> OCoordinates => MapData
             .SelectMany((row, rowIndex) => 
                 row.Select((value, colIndex) => new { value, rowIndex, colIndex }))
             .Where(cell => cell.value == 'O')
             .Select(cell => (cell.rowIndex, cell.colIndex))
             .ToList();
 
-    public int GPSCoordinateSum => OCoordinates.Select(oc => oc.row * 100 + oc.col).Sum();
+    public virtual int GPSCoordinateSum => OCoordinates.Select(oc => oc.row * 100 + oc.col).Sum();
 
     public virtual bool isBlocked((int row, int col) coordinate, char direction)
     {
@@ -152,6 +152,32 @@ public class SecondWarehouseMap : WarehouseMap
         }
         this._extendedMapdata = _initialMapData.Select(l => l).ToArray();
 
+    }
+
+
+    public override List<(int row, int col)> OCoordinates => MapData
+            .SelectMany((row, rowIndex) => 
+                row.Select((value, colIndex) => new { value, rowIndex, colIndex }))
+            .Where(cell => cell.value == '[')
+            .Select(cell => (cell.rowIndex, cell.colIndex))
+            .ToList();
+
+    public override int GPSCoordinateSum => GetGPSCoordinateSum();
+
+    private int GetGPSCoordinateSum()
+    {
+        int sum = 0;
+        foreach(var coordinate in OCoordinates)
+        {
+            int distanceFromLeftEdge = coordinate.col;
+            int distanceFromRightEdge = this.MapData[0].Length - (coordinate.col+1) -1;
+            int distanceFromTopEdge = coordinate.row;
+            int distanceFromBottomEdge = this.MapData.Length - coordinate.row;
+            int result = Math.Min(distanceFromLeftEdge,distanceFromRightEdge) + (Math.Min(distanceFromTopEdge,distanceFromBottomEdge) * 100);
+            Console.WriteLine($"Pair at {coordinate.row},{coordinate.col}. fromLeft: {distanceFromLeftEdge}, fromRight: {distanceFromRightEdge}, fromTop: {distanceFromTopEdge}, fromBottom: {distanceFromBottomEdge}, result: {result}");
+            sum += result;
+        }
+        return sum;
     }
 
     public override bool isBlocked((int row, int col) coordinate, char direction)
@@ -507,5 +533,6 @@ public class Day15Tests
             map.MoveRobot(c);
         }
         Assert.Equal((7,4),map.RobotPosition);
+        Assert.Equal(9021,map.GPSCoordinateSum);
     }
 }
