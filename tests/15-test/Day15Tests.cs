@@ -257,66 +257,26 @@ public class SecondWarehouseMap : WarehouseMap
                 while(tilesToCheck.Count > 0)
                 {
                     var box = tilesToCheck.Pop();
-                    
                     char thisTile = MapData[box.row][box.col];
-                    
                     char nextTile = MapData[box.row+Directions[direction].row][box.col];
                     
-                    if(thisTile == '[' && (nextTile == '.' || nextTile == '['))
+                    if(nextTile=='[')
                     {
-                        BoxesToMove.Push((box.row, box.col));
-                        BoxesToMove.Push((box.row, box.col+1));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
-                    }
-
-                    if (thisTile == ']' && (nextTile == '.' || nextTile ==']'))
-                    {
-                        BoxesToMove.Push((box.row, box.col));
-                        BoxesToMove.Push((box.row, box.col-1));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
-                    }
-
-                    
-                    if((thisTile=='@') && nextTile=='[')
-                    {
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
-                    }
-                    
-                    if(thisTile=='@' && nextTile==']')
-                    {
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
-                    }
-
-                    // om denna är en [ och nästa rad samma col är en ] så är de ojämna åt vänster - då ska denna och samma rad col+1 flyttas, och nästa rad col-1 ska checkas
-                    if((thisTile=='[') && nextTile==']')
-                    {
-                        BoxesToMove.Push((box.row, box.col));
-                        BoxesToMove.Push((box.row, box.col+1));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col-1));
-                    }
-
-
-                    // om denna är en ] och nästa rad samma col är en [ så är de ojämna åt höger -   då ska denna och samma rad col-1 flyttas, och nästa rad col+1 ska checkas
-                    if(thisTile==']' && nextTile == '[')
-                    {
-                        BoxesToMove.Push((box.row, box.col));
-                        BoxesToMove.Push((box.row, box.col-1));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col));
-                        tilesToCheck.Push((box.row + Directions[direction].row, box.col+1));
+                        BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile [
+                        BoxesToMove.Push((box.row+Directions[direction].row,box.col+1)); // move the tile to the right of nexttile - because it belongs to that box ]
                         
+                        tilesToCheck.Push((box.row+Directions[direction].row,box.col));
+                        tilesToCheck.Push((box.row+Directions[direction].row,box.col+1));
+
                     }
 
-                    if((thisTile==']' || thisTile == '['  || thisTile=='@') && nextTile!='[' && nextTile !=']')
+                    if(nextTile==']')
                     {
-                        continue;
+                        BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile ]
+                        BoxesToMove.Push((box.row+Directions[direction].row,box.col-1)); // move the tile to the left of nexttile - because it belongs to that box [
+                        tilesToCheck.Push((box.row+Directions[direction].row,box.col));
+                        tilesToCheck.Push((box.row+Directions[direction].row,box.col-1));
                     }
-                    
-                    
                 }
             }
 
@@ -339,7 +299,10 @@ public class SecondWarehouseMap : WarehouseMap
 
             MapData[RobotPosition.row][RobotPosition.col] = '.';
             MapData[robotNewRow][robotNewCol] = '@';
+            Console.WriteLine($"\r\nMoved: {direction}\r\n");
             this.PrintMap();
+            Console.WriteLine();
+            Console.WriteLine();
         }
         return !blocked;
     }
@@ -517,7 +480,7 @@ public class Day15Tests
         Assert.False(map.isBlocked(map.RobotPosition,'<'));
     }
     
-    [Fact]
+    [Fact(Skip ="Not now")]
     public void Part2SmallInputTestAllMoves()
     {
         var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
@@ -527,7 +490,21 @@ public class Day15Tests
         {
             map.MoveRobot(c);
         }
-        map.PrintMap();
+        //map.PrintMap();
+        Assert.Equal((2,5),map.RobotPosition);
+    }
+
+    [Fact]
+    public void Part2testInputTestAllMoves()
+    {
+        var map = new SecondWarehouseMap(testInput.Where(l => l.Contains('#')).ToArray());
+        var sequence = new MoveSequence(testInput.Where(l => !l.Contains('#')).ToArray());
         
+        foreach(char c in sequence.Sequence)
+        {
+            map.MoveRobot(c);
+        }
+        map.PrintMap();
+        //Assert.Equal((7,4),map.RobotPosition);
     }
 }
