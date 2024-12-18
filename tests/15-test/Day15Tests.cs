@@ -262,8 +262,10 @@ public class SecondWarehouseMap : WarehouseMap
                     
                     if(nextTile=='[')
                     {
-                        BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile [
-                        BoxesToMove.Push((box.row+Directions[direction].row,box.col+1)); // move the tile to the right of nexttile - because it belongs to that box ]
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile [
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col+1)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col+1)); // move the tile to the right of nexttile - because it belongs to that box ]
                         
                         tilesToCheck.Push((box.row+Directions[direction].row,box.col));
                         tilesToCheck.Push((box.row+Directions[direction].row,box.col+1));
@@ -272,8 +274,11 @@ public class SecondWarehouseMap : WarehouseMap
 
                     if(nextTile==']')
                     {
-                        BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile ]
-                        BoxesToMove.Push((box.row+Directions[direction].row,box.col-1)); // move the tile to the left of nexttile - because it belongs to that box [
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile ]
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col-1)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col-1)); // move the tile to the left of nexttile - because it belongs to that box [
+
                         tilesToCheck.Push((box.row+Directions[direction].row,box.col));
                         tilesToCheck.Push((box.row+Directions[direction].row,box.col-1));
                     }
@@ -291,7 +296,7 @@ public class SecondWarehouseMap : WarehouseMap
                 int newRow = box.row + Directions[direction].row;
                 int newCol = box.col + Directions[direction].col;
                 MapData[newRow][newCol] = boxChar;
-                this.PrintMap();
+                //this.PrintMap();
             }
             // finally move the robot position
             int robotNewRow = this.RobotPosition.row + Directions[direction].row;
@@ -299,10 +304,9 @@ public class SecondWarehouseMap : WarehouseMap
 
             MapData[RobotPosition.row][RobotPosition.col] = '.';
             MapData[robotNewRow][robotNewCol] = '@';
-            Console.WriteLine($"\r\nMoved: {direction}\r\n");
-            this.PrintMap();
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine($"\r\nMoved: {direction}\r\n");
+            //this.PrintMap();
+            
         }
         return !blocked;
     }
@@ -469,18 +473,17 @@ public class Day15Tests
     }
 
 
-    [Fact(Skip="Not now")]
+    [Fact()]
     public void Part2SmallInputTestIsBlocked()
     {
         var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
-        map.PrintMap();
         map.MoveRobot('>');
         Assert.Equal((3,11),map.RobotPosition);
         Assert.True(map.isBlocked(map.RobotPosition,'>'));
         Assert.False(map.isBlocked(map.RobotPosition,'<'));
     }
     
-    [Fact(Skip ="Not now")]
+    [Fact()]
     public void Part2SmallInputTestAllMoves()
     {
         var map = new SecondWarehouseMap(smallTestInput.Where(l => l.Contains('#')).ToArray());
@@ -490,11 +493,10 @@ public class Day15Tests
         {
             map.MoveRobot(c);
         }
-        //map.PrintMap();
         Assert.Equal((2,5),map.RobotPosition);
     }
 
-    [Fact]
+    [Fact()]
     public void Part2testInputTestAllMoves()
     {
         var map = new SecondWarehouseMap(testInput.Where(l => l.Contains('#')).ToArray());
@@ -504,7 +506,6 @@ public class Day15Tests
         {
             map.MoveRobot(c);
         }
-        map.PrintMap();
-        //Assert.Equal((7,4),map.RobotPosition);
+        Assert.Equal((7,4),map.RobotPosition);
     }
 }
