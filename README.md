@@ -201,3 +201,12 @@ Again attempting this puzzle a few days after it's original release because of -
 Part 1 was again quite straightforward. Just handle a map and some basic checking if moves can be made, and stuff like that. Again TDD helps a lot with figuring out where to go next. Starting with basic tests and building up to more complete solutions.  
 
 Part 2 looks a bit trickier... I'm going to have to check that out later, after work or during lunch break maybe. The movement stuff is going to be a lot more complex I think.  
+
+Yeah, it's a full day later and I just spent two hours trying to get this to work.    
+Lots of tricky bits here, at first I got stuck trying to understand how to calculate the GPS coordinates for part 2. I think the description for that was a bit wonky - I had to reimplement this - which I found after running my solution with some more test inputs from Reddit with more corner cases.    
+Turns out I had both misunderstood the GPS calculation, and had a bug in my `MoveRobot()` method. The bug was found when I debugged trying to push an inverted pyramid of boxes upwards.  
+I thought I was going to go mad figuring out what I needed to change - it came down to the order for checking tiles in the grid.  
+Honestly I was close to giving up on this one, but then I had some epiphany and switched one Stack to a Queue - and Hey Presto!  
+
+I started down the Stack<(int,int)> path for Part 1, which worked fine - and then continued on with that for Part 2 as well.  
+Now afterwards I think I might have benefited from doing a recursive method instead, tricky as that is - it might still have been easier to test and debug.  

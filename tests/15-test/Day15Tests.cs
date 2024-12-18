@@ -162,7 +162,7 @@ public class SecondWarehouseMap : WarehouseMap
             .Select(cell => (cell.rowIndex, cell.colIndex))
             .ToList();
 
-    public override int GPSCoordinateSum => GetGPSCoordinateSum();
+    public override int GPSCoordinateSum => this.GetGPSCoordinateSum();
 
     private int GetGPSCoordinateSum()
     {
@@ -170,11 +170,8 @@ public class SecondWarehouseMap : WarehouseMap
         foreach(var coordinate in OCoordinates)
         {
             int distanceFromLeftEdge = coordinate.col;
-            int distanceFromRightEdge = this.MapData[0].Length - (coordinate.col+1) -1;
             int distanceFromTopEdge = coordinate.row;
-            int distanceFromBottomEdge = this.MapData.Length - coordinate.row;
-            int result = Math.Min(distanceFromLeftEdge,distanceFromRightEdge) + (Math.Min(distanceFromTopEdge,distanceFromBottomEdge) * 100);
-            Console.WriteLine($"Pair at {coordinate.row},{coordinate.col}. fromLeft: {distanceFromLeftEdge}, fromRight: {distanceFromRightEdge}, fromTop: {distanceFromTopEdge}, fromBottom: {distanceFromBottomEdge}, result: {result}");
+            int result = distanceFromLeftEdge + distanceFromTopEdge * 100;
             sum += result;
         }
         return sum;
@@ -254,11 +251,6 @@ public class SecondWarehouseMap : WarehouseMap
         Stack<(int row, int col)> BoxesToMove = new();
         if(!blocked)
         {
-            // Use IsNextToBox((int, int) coord, Direction direction) that checks if there is a box next to us in the direction we're moving.
-            // For each true, add that coordinate to a stack and continue until false.
-            // Then process the stack and move those boxes one step in the intended direction.
-            // Lastly move the robot
-            
             int checkRow = RobotPosition.row;
             int checkCol = RobotPosition.col;
 
@@ -276,44 +268,43 @@ public class SecondWarehouseMap : WarehouseMap
             // for up-down we need to check more...
              if(direction == 'v' || direction =='^')
             {
-
-                
-                Stack<(int row, int col)> tilesToCheck = new();
-                tilesToCheck.Push((checkRow,checkCol));
+                Queue<(int row, int col)> tilesToCheck = new();
+                tilesToCheck.Enqueue((checkRow,checkCol));
                 while(tilesToCheck.Count > 0)
                 {
-                    var box = tilesToCheck.Pop();
+                    var box = tilesToCheck.Dequeue();
                     char thisTile = MapData[box.row][box.col];
                     char nextTile = MapData[box.row+Directions[direction].row][box.col];
                     
                     if(nextTile=='[')
                     {
-                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
-                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile [
                         if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col+1)))
                             BoxesToMove.Push((box.row+Directions[direction].row,box.col+1)); // move the tile to the right of nexttile - because it belongs to that box ]
                         
-                        tilesToCheck.Push((box.row+Directions[direction].row,box.col));
-                        tilesToCheck.Push((box.row+Directions[direction].row,box.col+1));
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile [
+                        
+                        tilesToCheck.Enqueue((box.row+Directions[direction].row,box.col+1));
+                        tilesToCheck.Enqueue((box.row+Directions[direction].row,box.col));
 
                     }
 
                     if(nextTile==']')
                     {
-                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
-                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile ]
                         if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col-1)))
                             BoxesToMove.Push((box.row+Directions[direction].row,box.col-1)); // move the tile to the left of nexttile - because it belongs to that box [
-
-                        tilesToCheck.Push((box.row+Directions[direction].row,box.col));
-                        tilesToCheck.Push((box.row+Directions[direction].row,box.col-1));
+                        
+                        if(!BoxesToMove.Contains((box.row+Directions[direction].row,box.col)))
+                            BoxesToMove.Push((box.row+Directions[direction].row,box.col)); // move nexttile ]
+                        
+                        tilesToCheck.Enqueue((box.row+Directions[direction].row,box.col-1));
+                        tilesToCheck.Enqueue((box.row+Directions[direction].row,box.col));
                     }
                 }
             }
 
 
             // Move the boxes
-
             while(BoxesToMove.Count > 0)
             {
                 var box = BoxesToMove.Pop();
@@ -322,17 +313,13 @@ public class SecondWarehouseMap : WarehouseMap
                 int newRow = box.row + Directions[direction].row;
                 int newCol = box.col + Directions[direction].col;
                 MapData[newRow][newCol] = boxChar;
-                //this.PrintMap();
             }
+            
             // finally move the robot position
             int robotNewRow = this.RobotPosition.row + Directions[direction].row;
             int robotNewCol = this.RobotPosition.col + Directions[direction].col;
-
             MapData[RobotPosition.row][RobotPosition.col] = '.';
             MapData[robotNewRow][robotNewCol] = '@';
-            //Console.WriteLine($"\r\nMoved: {direction}\r\n");
-            //this.PrintMap();
-            
         }
         return !blocked;
     }
@@ -384,6 +371,23 @@ public class Day15Tests
         "",
         "<vv<<^^<<^^"
     ];
+
+    private string[] extraCornerCaseInput = [
+        "#######",
+        "#...#.#",
+        "#.....#",
+        "#.....#",
+        "#.....#",
+        "#.....#",
+        "#.OOO@#",
+        "#.OOO.#",
+        "#..O..#",
+        "#.....#",
+        "#.....#",
+        "#######",
+        "",
+        "v<vv<<^^^^^"        
+        ];
 
 #region Part1Tests
     [Fact]
@@ -533,6 +537,20 @@ public class Day15Tests
             map.MoveRobot(c);
         }
         Assert.Equal((7,4),map.RobotPosition);
+        map.PrintMap();
         Assert.Equal(9021,map.GPSCoordinateSum);
+    }
+
+    [Fact]
+    public void Part2TestExtraCornerCases()
+    {
+        var map = new SecondWarehouseMap(extraCornerCaseInput.Where(l => l.Contains('#')).ToArray());
+        var sequence = new MoveSequence(extraCornerCaseInput.Where(l => !l.Contains('#')).ToArray());
+        
+        foreach(char c in sequence.Sequence)
+        {
+            map.MoveRobot(c);
+        }
+        Assert.Equal(2339,map.GPSCoordinateSum);
     }
 }
