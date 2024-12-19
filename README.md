@@ -210,3 +210,12 @@ Honestly I was close to giving up on this one, but then I had some epiphany and 
 
 I started down the Stack<(int,int)> path for Part 1, which worked fine - and then continued on with that for Part 2 as well.  
 Now afterwards I think I might have benefited from doing a recursive method instead, tricky as that is - it might still have been easier to test and debug.  
+
+## --- Day 16: Reindeer Maze ---  
+
+Oh no.. Pathfinding!  
+__Part 1__ was not too bad. Pathfinding using a priority queue to sort by cost.  
+
+For __Part 2__ I have done a few futile attempts so far - but I can't seem to wrap my head around how to check all the possible paths and their costs - without risking excluding a path that is similar to one we have already taken, and at the same time avoid an infinite loop.  
+I'll have to sleep on this I think.  
+
