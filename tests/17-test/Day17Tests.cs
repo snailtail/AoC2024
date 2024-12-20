@@ -421,8 +421,7 @@ public class Day17Tests
     [Fact]
     public void TestRunPart1Example()
     {
-        //var myComputer = new ThreeBitComputer(exampleInput);
-        var myComputer = new ThreeBitComputer(File.ReadAllLines("17.dat"));
+        var myComputer = new ThreeBitComputer(exampleInput);
         myComputer.Run();
         Assert.Equal("4,6,3,5,6,3,5,2,1,0",myComputer.OUTPUT);
     }
