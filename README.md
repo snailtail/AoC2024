@@ -222,3 +222,10 @@ Whoo boy. This took a lot of effort. I dabbled with DFS, BFS, Dijkstra's and eve
 I had to employ Chat GPT because I was going mad at some point. Turns out I forgot to account for the S and E tiles so this time i had an off-by-two-error instead of the usual off-by-one. Almost gave up again... Feels like I'm getting close to the edge of my capabilities even with "cheating" with Chat GPT and not building every algorithm myself - which I usually aim for.  
 
 
+## --- Day 17: Chronospatial Computer ---  
+
+**Part 1**  
+Yay! I love these kinds of challenges. At least for now when I've only seen Part 1. :D  
+_Build a "Three bit computer" and run this program._  
+No problem. It's fun implementing these, the TDD helps a lot as always - and this is very well defined as far as expected outcomes.  
+
